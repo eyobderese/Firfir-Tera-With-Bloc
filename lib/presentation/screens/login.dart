@@ -1,40 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firfir_tera/bloc/auth/authRepository.dart';
+import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
+import 'package:firfir_tera/bloc/auth/login/login_bloc.dart';
+import 'package:firfir_tera/bloc/auth/login/login_event.dart';
+import 'package:firfir_tera/bloc/auth/login/login_state.dart';
 import 'package:firfir_tera/presentation/widgets/brand_promo.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
-
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  final TextEditingController _email_controller = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  bool _passwordVisible = false;
-
-  @override
-  void dispose() {
-    _email_controller.dispose();
-    _password.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
-    String email = _email_controller.text;
-    String password = _password.text;
-  }
+class Login extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBody: true,
-        body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Center(
+          child: BlocProvider(
+            create: (context) => LoginBloc(
+              authRepo: context.read<AuthRepository>(),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const BrandPromo(
@@ -48,105 +36,106 @@ class _LoginState extends State<Login> {
                           fontSize: 20,
                           fontWeight: FontWeight.normal,
                         )),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 30.0,
-                          ),
-                          TextField(
-                            controller: _email_controller,
-                            decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                labelText: 'email',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(20),
-                                        right: Radius.circular(20)))),
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          TextField(
-                            controller: _password,
-                            obscureText: !_passwordVisible,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
-                              labelText: "Password",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(20),
-                                    right: Radius.circular(20)),
-                              ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 30.0,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _submit;
-                              Navigator.pushReplacementNamed(context, '/home');
-                            },
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.orange),
-                                minimumSize: MaterialStateProperty.all(
-                                    const Size(130, 60)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(40.0)))),
-                            child: const Text(
-                              "Login",
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Don\'t have Account? '),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/register_1');
-                                },
-                                child: const MouseRegion(
-                                    cursor: SystemMouseCursors.click,
-                                    child: Text(
-                                      "Register",
-                                      style: TextStyle(
-                                        color: Colors.orange,
-                                      ),
-                                    )),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
                     const SizedBox(
-                      height: 20,
+                      height: 30.0,
                     ),
-                  ],
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: _loginForm())
+                  ]),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _loginForm() {
+    return BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          final formStatus = state.formStatus;
+          if (formStatus is SubmissionFailed) {
+            _showSnackBar(context, formStatus.exception.toString());
+          }
+        },
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _usernameField(),
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-            )));
+                _passwordField(),
+                const SizedBox(
+                  height: 30,
+                ),
+                _loginButton(),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget _usernameField() {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextFormField(
+        decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.email),
+            labelText: 'email',
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(20), right: Radius.circular(20)))),
+        validator: (value) =>
+            state.isValidUsername ? null : 'Username is too short',
+        onChanged: (value) => context.read<LoginBloc>().add(
+              LoginUsernameChanged(username: value),
+            ),
+      );
+    });
+  }
+
+  Widget _passwordField() {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextFormField(
+        obscureText: true,
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.lock),
+          labelText: "Password",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(20), right: Radius.circular(20)),
+          ),
+        ),
+        validator: (value) =>
+            state.isValidPassword ? null : 'Password is too short',
+        onChanged: (value) => context.read<LoginBloc>().add(
+              LoginPasswordChanged(password: value),
+            ),
+      );
+    });
+  }
+
+  Widget _loginButton() {
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return state.formStatus is FormSubmitting
+          ? const CircularProgressIndicator()
+          : ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  context.read<LoginBloc>().add(LoginSubmitted());
+                }
+              },
+              child: const Text('Login'),
+            );
+    });
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

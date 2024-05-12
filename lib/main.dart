@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         '/onboarding_2': (context) => const OnBoarding_2(),
         '/onboarding_3': (context) => const OnBoarding_3(),
         '/home': (context) => const Home(),
-        '/login': (context) => const Login(),
+        '/login': (context) => Login(),
         '/register_1': (context) => const Register_1(),
         '/register_2': (context) => const Register_2(),
         '/register_3': (context) => const Register_3(),
