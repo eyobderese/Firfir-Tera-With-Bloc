@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OnBoarding_2 extends StatefulWidget {
@@ -47,8 +48,7 @@ class _OnBoarding_2State extends State<OnBoarding_2> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, '/onboarding_3');
+                          context.goNamed("/onBoarding_3");
                         },
                         style: ButtonStyle(
                             backgroundColor:

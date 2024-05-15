@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firfir_tera/bloc/auth/authRepository.dart';
 import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/auth/login/login_bloc.dart';
@@ -6,9 +8,24 @@ import 'package:firfir_tera/bloc/auth/login/login_state.dart';
 import 'package:firfir_tera/presentation/widgets/brand_promo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Login extends StatelessWidget {
+  const Login({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: RepositoryProvider(
+        create: (context) => AuthRepository(),
+        child: Login1(),
+      ),
+    );
+  }
+}
+
+class Login1 extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -18,6 +35,7 @@ class Login extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Center(
           child: BlocProvider(
+            lazy: false,
             create: (context) => LoginBloc(
               authRepo: context.read<AuthRepository>(),
             ),
@@ -41,7 +59,7 @@ class Login extends StatelessWidget {
                     ),
                     Container(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: _loginForm())
+                        child: _loginForm(context))
                   ]),
             ),
           ),
@@ -50,18 +68,22 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _loginForm() {
+  Widget _loginForm(BuildContext context1) {
     return BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           final formStatus = state.formStatus;
           if (formStatus is SubmissionFailed) {
             _showSnackBar(context, formStatus.exception.toString());
+          } else if (formStatus is SubmissionSuccess) {
+            _showSnackBar(context, 'Success');
+            debugPrint('Context: $context1');
+            context.goNamed("/home");
           }
         },
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -125,7 +147,7 @@ class Login extends StatelessWidget {
           ? const CircularProgressIndicator()
           : ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
+                if (_formKey.currentState?.validate() ?? true) {
                   context.read<LoginBloc>().add(LoginSubmitted());
                 }
               },
