@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 // import 'dart:io';
 import 'dart:convert';
@@ -48,7 +49,7 @@ class _Register_3State extends State<Register_3> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/register_2');
+                      context.goNamed("/register_2");
                     },
                     icon: const Icon(
                       Icons.arrow_back,

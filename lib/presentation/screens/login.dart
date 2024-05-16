@@ -58,8 +58,27 @@ class Login1 extends StatelessWidget {
                       height: 30.0,
                     ),
                     Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: _loginForm(context))
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: _loginForm(context)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Don\'t have Account? '),
+                        GestureDetector(
+                          onTap: () {
+                            context.goNamed("/register_1");
+                          },
+                          child: const MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: Text(
+                                "Register",
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                ),
+                              )),
+                        ),
+                      ],
+                    )
                   ]),
             ),
           ),

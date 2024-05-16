@@ -2,6 +2,7 @@ import 'model/user.dart';
 
 class UserRepository {
   User? _user;
+  int count = 0;
 
   Future<User?> getUser() async {
     await Future.delayed(const Duration(seconds: 1));

@@ -57,11 +57,11 @@ final GoRouter _route = GoRouter(
     GoRoute(
         path: "/register_1",
         name: "/register_1",
-        builder: (context, state) => const Register_1()),
+        builder: (context, state) => Register_1()),
     GoRoute(
         path: "/register_2",
         name: "/register_2",
-        builder: (context, state) => const Register_2()),
+        builder: (context, state) => Register_2()),
     GoRoute(
         path: "/register_3",
         name: "/register_3",

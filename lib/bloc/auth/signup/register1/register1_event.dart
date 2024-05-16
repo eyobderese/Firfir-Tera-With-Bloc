@@ -1,4 +1,7 @@
 // creating Loging event
+
+import 'package:firfir_tera/bloc/auth/model/user.dart';
+
 abstract class Register1Event {}
 
 class RegisterEmailChanged extends Register1Event {
@@ -13,9 +16,9 @@ class RegisterPasswordChanged extends Register1Event {
 }
 
 class RegisterAccountTypeChanged extends Register1Event {
-  final String accountType;
+  final UserType? accountType;
 
-  RegisterAccountTypeChanged({required this.accountType});
+  RegisterAccountTypeChanged({this.accountType});
 }
 
-class LoginSubmitted extends Register1Event {}
+class Registration1Submitted extends Register1Event {}
