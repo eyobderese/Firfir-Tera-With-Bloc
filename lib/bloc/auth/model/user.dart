@@ -1,38 +1,39 @@
 import 'package:equatable/equatable.dart';
+import 'package:firfir_tera/presentation/screens/profile.dart';
 
 class User extends Equatable {
-  const User({
-    required this.register1,
-    required this.register2
-    
-  });
+  const User(
+      {required this.register1,
+      required this.register2,
+      required this.profileImage});
 
   final Register1 register1;
   final Register2 register2;
- 
+  final ProfileImage profileImage;
 
   factory User.empty() {
     return User(
       register1: Register1.empty(),
       register2: Register2.empty(),
-  
+      profileImage: ProfileImage.empty(),
     );
   }
 
   User copyWith({
     Register1? register1,
     Register2? register2,
+    ProfileImage? profileImage,
   }) {
     return User(
       register1: register1 ?? this.register1,
       register2: register2 ?? this.register2,
+      profileImage: profileImage ?? this.profileImage,
     );
   }
 
   @override
-  List<Object?> get props => [register1, register2];
+  List<Object?> get props => [register1, register2, profileImage];
 }
-
 
 class Register1 extends Equatable {
   const Register1({
@@ -104,6 +105,32 @@ class Register2 extends Equatable {
   List<Object?> get props => [firstName, lastName, bio];
 }
 
+class ProfileImage extends Equatable {
+  const ProfileImage({
+    required this.imageName,
+    required this.imageData,
+  });
+
+  final String imageName;
+  final String imageData;
+
+  ProfileImage.empty()
+      : imageName = '',
+        imageData = '';
+
+  ProfileImage copyWith({
+    String? imageName,
+    String? imageData,
+  }) {
+    return ProfileImage(
+      imageName: imageName ?? this.imageName,
+      imageData: imageData ?? this.imageData,
+    );
+  }
+
+  @override
+  List<Object?> get props => [imageName, imageData];
+}
 
 enum UserType {
   customer,

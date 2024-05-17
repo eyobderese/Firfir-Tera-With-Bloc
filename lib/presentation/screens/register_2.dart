@@ -25,64 +25,61 @@ class Register_2 extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: RepositoryProvider(
-            create: (context) => UserRepository(),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            context.goNamed("/register_1");
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 40,
-                          ),
-                          color: Colors.white,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Column(
-                      children: [
-                        Text(
-                          "Fill in Your Bio to get Started",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(color: Colors.white, fontSize: 40),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.goNamed("/register_1");
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 40,
                         ),
-                        Text(
-                          "The data will be displayed in your account profile ",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 70,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Column(
+                    children: [
+                      Text(
+                        "Fill in Your Bio to get Started",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.white, fontSize: 40),
                       ),
-                      child: BlocProvider(
-                        create: (context) => Register2Bloc(
-                          userRepo: context.read<UserRepository>(),
+                      Text(
+                        "The data will be displayed in your account profile ",
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                        child: _register2Form(),
+                        textAlign: TextAlign.start,
                       ),
-                    )
-                  ],
-                ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 70,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: BlocProvider(
+                      create: (context) => Register2Bloc(
+                        userRepo: context.read<UserRepository>(),
+                      ),
+                      child: _register2Form(),
+                    ),
+                  )
+                ],
               ),
             ),
           ),

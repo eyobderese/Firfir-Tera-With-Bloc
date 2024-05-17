@@ -2,7 +2,6 @@ import 'model/user.dart';
 
 class UserRepository {
   User? _user;
-  int count = 0;
 
   Future<User?> getUser() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -37,6 +36,21 @@ class UserRepository {
         firstName: firstName,
         lastName: lastName,
         bio: bio,
+      ),
+    );
+  }
+
+// it only have imageName and imageData
+  Future<void> updateProfileImage({
+    required String imageName,
+    required String imageData,
+  }) async {
+    _user ??= User.empty();
+    await Future.delayed(const Duration(seconds: 1));
+    _user = _user?.copyWith(
+      profileImage: ProfileImage(
+        imageName: imageName,
+        imageData: imageData,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'edit_profile.dart';
 
 class Profile extends StatelessWidget {
@@ -33,7 +34,8 @@ class Profile extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const EditProfile()),
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfile()),
                   );
                 },
                 style: ButtonStyle(
@@ -45,12 +47,15 @@ class Profile extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.goNamed("/login");
+                },
                 style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(const Size(90, 40)),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40)))),
-                child: const Text('Log Out', style: TextStyle(color: Colors.red)),
+                child:
+                    const Text('Log Out', style: TextStyle(color: Colors.red)),
               ),
             ],
           ),

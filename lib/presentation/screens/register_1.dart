@@ -28,59 +28,56 @@ class Register_1 extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: RepositoryProvider(
-            create: (context) => UserRepository(),
-            child: Center(
-              child: BlocProvider(
-                lazy: false,
-                create: (context) =>
-                    Register1Bloc(userRepo: context.read<UserRepository>()),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const BrandPromo(color: Colors.white),
-                      const SizedBox(
-                        height: 80,
+          child: Center(
+            child: BlocProvider(
+              lazy: false,
+              create: (context) =>
+                  Register1Bloc(userRepo: context.read<UserRepository>()),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const BrandPromo(color: Colors.white),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                    Text(
+                      "Sign Up for free",
+                      style: GoogleFonts.firaSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
                       ),
-                      Text(
-                        "Sign Up for free",
-                        style: GoogleFonts.firaSans(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      child: Column(
+                        children: [
+                          _register1Form(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Already have an account?'),
+                              TextButton(
+                                onPressed: () {
+                                  context.goNamed("/login");
+                                },
+                                child: const Text('Login',
+                                    style: TextStyle(color: Colors.orange)),
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          children: [
-                            _register1Form(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('Already have an account?'),
-                                TextButton(
-                                  onPressed: () {
-                                    context.goNamed("/login");
-                                  },
-                                  child: const Text('Login',
-                                      style: TextStyle(color: Colors.orange)),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
             ),

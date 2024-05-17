@@ -1,3 +1,4 @@
+import 'package:firfir_tera/bloc/auth/userRepositery.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
@@ -6,6 +7,7 @@ import 'package:firfir_tera/presentation/screens/home.dart';
 import 'package:firfir_tera/presentation/screens/login.dart';
 import 'package:firfir_tera/presentation/screens/register_1.dart';
 import 'package:firfir_tera/presentation/screens/register_2.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firfir_tera/presentation/screens/detailed_recipe_view.dart';
@@ -24,11 +26,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-          textTheme:
-              GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme)),
-      routerConfig: _route,
+    return RepositoryProvider(
+      create: (context) => UserRepository(),
+      child: MaterialApp.router(
+        theme: ThemeData(
+            textTheme:
+                GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme)),
+        routerConfig: _route,
+      ),
     );
   }
 }
