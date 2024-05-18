@@ -1,24 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firfir_tera/bloc/discover/discover_bloc.dart';
+import 'package:firfir_tera/bloc/discover/discover_event.dart';
+import 'package:firfir_tera/bloc/discover/discover_state.dart';
+import 'package:firfir_tera/bloc/discover/recipe_repositery.dart';
 import 'package:firfir_tera/presentation/widgets/recipe_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Discover extends StatefulWidget {
-  const Discover({super.key});
-
-  @override
-  State<Discover> createState() => _DiscoverState();
-}
-
-class _DiscoverState extends State<Discover> {
+class Discover extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
-  String selectedOption = "All";
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,63 +16,66 @@ class _DiscoverState extends State<Discover> {
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 30),
-              Text("Search", style: GoogleFonts.dancingScript(fontSize: 30)),
-              Text("for Recipes", style: GoogleFonts.firaSans(fontSize: 40)),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: "recipe name",
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () {
-                      _searchController.clear();
+          child: BlocProvider(
+            lazy: false,
+            create: (context) => DiscoverBloc(
+              recipeRepository: context.read<RecipeRepository>(),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 30),
+                Text("Search", style: GoogleFonts.dancingScript(fontSize: 30)),
+                Text("for Recipes", style: GoogleFonts.firaSans(fontSize: 40)),
+                const SizedBox(height: 20),
+                SearchFormField(_searchController),
+                const SizedBox(height: 40),
+                Wrap(
+                  spacing: 20,
+                  children: [
+                    buildOptionButton("All", "food"),
+                    buildOptionButton("Breakfast", "breakfast"),
+                    buildOptionButton("Lunch", "lunch"),
+                    buildOptionButton("Dinner", "dinner"),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Trending",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  height: 280,
+                  child: BlocListener<DiscoverBloc, DiscoverState>(
+                    listener: (context, state) {
+                      if (state is DiscoverError) {
+                        _showSnackBar(context, state.message);
+                      } else if (state is DiscoverLoading) {
+                        _showSnackBar(context, "Recipes Loading...");
+                      }
                     },
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    child: BlocBuilder<DiscoverBloc, DiscoverState>(
+                      builder: (context, state) => state is DiscoverLoaded ||
+                              state is DiscoverInitial
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.getRecipes.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  child: RecipeCard(
+                                    imagePath: state.getRecipes[index].image,
+                                    recipeName: state.getRecipes[index].name,
+                                  ),
+                                );
+                              },
+                            )
+                          : const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
                 ),
-                onChanged: (val) {},
-                onSubmitted: (val) {},
-              ),
-              const SizedBox(height: 40),
-              Wrap(
-                spacing: 20,
-                children: [
-                  buildOptionButton("All", "food"),
-                  buildOptionButton("Breakfast", "breakfast"),
-                  buildOptionButton("Lunch", "lunch"),
-                  buildOptionButton("Dinner", "dinner"),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                "Trending",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                height: 280,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recipeList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: RecipeCard(
-                        imagePath: recipeList[index].imagePath,
-                        recipeName: recipeList[index].recipeName,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -99,39 +92,73 @@ class _DiscoverState extends State<Discover> {
 
     String iconPath = iconMap[iconName] ?? '';
 
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedOption = option;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        decoration: BoxDecoration(
-          color:
-              selectedOption == option ? Colors.grey[200] : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            Image.asset(
-              iconPath,
-              width: 30,
-              height: 30,
-            ),
-            Text(
-              option,
-              style: TextStyle(
-                fontSize: selectedOption == option ? 18 : 16,
-                fontWeight: selectedOption == option
-                    ? FontWeight.bold
-                    : FontWeight.normal,
-                color: selectedOption == option ? Colors.black : Colors.grey,
+    return BlocBuilder<DiscoverBloc, DiscoverState>(
+      builder: (context, state) => InkWell(
+        onTap: () {
+          context.read<DiscoverBloc>().add(FilterChanged(filter: option));
+          print(state.filtter);
+          print(state is DiscoverLoaded);
+          print(state is DiscoverLoading);
+          print(state is DiscoverError);
+          print(state is DiscoverInitial);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color:
+                state.filtter == option ? Colors.grey[200] : Colors.transparent,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            children: [
+              Image.asset(
+                iconPath,
+                width: 30,
+                height: 30,
               ),
-            ),
-          ],
+              Text(
+                option,
+                style: TextStyle(
+                  fontSize: state.filtter == option ? 18 : 16,
+                  fontWeight: state.filtter == option
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                  color: state.filtter == option ? Colors.black : Colors.grey,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+void _showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+}
+
+Widget SearchFormField(TextEditingController _searchController) {
+  return BlocBuilder<DiscoverBloc, DiscoverState>(builder: (context, state) {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: "recipe name",
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.cancel),
+          onPressed: () {
+            context.read<DiscoverBloc>().add(QueryCancelled());
+            _searchController.clear();
+          },
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+      ),
+      onChanged: (val) {},
+      onSubmitted: (val) {
+        context.read<DiscoverBloc>().add(SearchQueryChanged(query: val));
+      },
+    );
+  });
 }

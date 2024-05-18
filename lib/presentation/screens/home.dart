@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
 }
 
 class _Home extends StatelessWidget {
-  static const List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     Discover(),
     CreateRecipe(),
     Profile(),

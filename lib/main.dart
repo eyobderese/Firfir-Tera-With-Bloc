@@ -1,4 +1,5 @@
 import 'package:firfir_tera/bloc/auth/userRepositery.dart';
+import 'package:firfir_tera/bloc/discover/recipe_repositery.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
@@ -26,8 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => UserRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<UserRepository>(
+          create: (context) => UserRepository(),
+        ),
+        RepositoryProvider<RecipeRepository>(
+          create: (context) => RecipeRepository(),
+        ),
+      ],
       child: MaterialApp.router(
         theme: ThemeData(
             textTheme:
