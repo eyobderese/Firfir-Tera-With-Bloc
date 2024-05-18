@@ -1,5 +1,5 @@
-import 'package:firfir_tera/bloc/auth/userRepositery.dart';
-import 'package:firfir_tera/bloc/discover/recipe_repositery.dart';
+import 'package:firfir_tera/Repository/userRepositery.dart';
+import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';

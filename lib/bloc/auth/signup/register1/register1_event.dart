@@ -1,6 +1,6 @@
 // creating Loging event
 
-import 'package:firfir_tera/bloc/auth/model/user.dart';
+import 'package:firfir_tera/model/user.dart';
 
 abstract class Register1Event {}
 

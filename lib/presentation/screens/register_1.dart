@@ -1,9 +1,9 @@
 import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
-import 'package:firfir_tera/bloc/auth/model/user.dart';
+import 'package:firfir_tera/model/user.dart';
 import 'package:firfir_tera/bloc/auth/signup/register1/register1_bloc.dart';
 import 'package:firfir_tera/bloc/auth/signup/register1/register1_state.dart';
 import 'package:firfir_tera/bloc/auth/signup/register1/register1_event.dart';
-import 'package:firfir_tera/bloc/auth/userRepositery.dart';
+import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:flutter/material.dart';
 import 'package:firfir_tera/presentation/widgets/brand_promo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firfir_tera/presentation/services/User.dart';
+import 'package:firfir_tera/services/User.dart';
 import 'package:firfir_tera/presentation/screens/user_detail_for_admin.dart';
 
 class AdminPanel extends StatelessWidget {

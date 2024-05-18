@@ -1,7 +1,7 @@
 import 'package:firfir_tera/bloc/discover/discover_bloc.dart';
 import 'package:firfir_tera/bloc/discover/discover_event.dart';
 import 'package:firfir_tera/bloc/discover/discover_state.dart';
-import 'package:firfir_tera/bloc/discover/recipe_repositery.dart';
+import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/presentation/widgets/recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,11 +96,6 @@ class Discover extends StatelessWidget {
       builder: (context, state) => InkWell(
         onTap: () {
           context.read<DiscoverBloc>().add(FilterChanged(filter: option));
-          print(state.filtter);
-          print(state is DiscoverLoaded);
-          print(state is DiscoverLoading);
-          print(state is DiscoverError);
-          print(state is DiscoverInitial);
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -138,17 +133,17 @@ void _showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
 }
 
-Widget SearchFormField(TextEditingController _searchController) {
+Widget SearchFormField(TextEditingController searchController) {
   return BlocBuilder<DiscoverBloc, DiscoverState>(builder: (context, state) {
     return TextField(
+      controller: searchController,
       decoration: InputDecoration(
         hintText: "recipe name",
         prefixIcon: const Icon(Icons.search),
         suffixIcon: IconButton(
           icon: const Icon(Icons.cancel),
           onPressed: () {
-            context.read<DiscoverBloc>().add(QueryCancelled());
-            _searchController.clear();
+            searchController.clear();
           },
         ),
         border: OutlineInputBorder(

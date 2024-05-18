@@ -1,4 +1,4 @@
-import 'model/user.dart';
+import '../model/user.dart';
 
 class UserRepository {
   User? _user;

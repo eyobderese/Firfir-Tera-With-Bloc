@@ -10,10 +10,6 @@ class FilterChanged extends DiscoverEvent {
   FilterChanged({required this.filter});
 }
 
-class QueryCancelled extends DiscoverEvent {
-  QueryCancelled();
-}
-
 class QuerySummited extends DiscoverEvent {
   QuerySummited();
 }

@@ -1,5 +1,5 @@
 import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
-import 'package:firfir_tera/bloc/auth/model/user.dart';
+import 'package:firfir_tera/model/user.dart';
 
 class Register1State {
   final String email;

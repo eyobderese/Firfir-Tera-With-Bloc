@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firfir_tera/presentation/services/User.dart';
+import 'package:firfir_tera/services/User.dart';
 
 class UserDetails extends StatefulWidget {
   final User user;

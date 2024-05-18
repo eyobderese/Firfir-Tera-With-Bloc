@@ -1,4 +1,4 @@
-import 'package:firfir_tera/bloc/auth/model/recipe.dart';
+import 'package:firfir_tera/model/recipe.dart';
 
 class RecipeRepository {
   Future<List<Recipe>> fetchRecipes(String query, String filter) async {

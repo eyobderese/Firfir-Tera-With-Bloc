@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:firfir_tera/bloc/auth/authRepository.dart';
+import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/auth/login/login_bloc.dart';
 import 'package:firfir_tera/bloc/auth/login/login_event.dart';
