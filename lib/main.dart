@@ -1,5 +1,6 @@
 import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
+import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
@@ -36,18 +37,26 @@ class MyApp extends StatelessWidget {
           create: (context) => RecipeRepository(),
         ),
       ],
-      child: MaterialApp.router(
-        theme: ThemeData(
-            textTheme:
-                GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme)),
-        routerConfig: _route,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<CreateRecipeBloc>(
+            create: (context) => CreateRecipeBloc(
+                recipeRepository: context.read<RecipeRepository>()),
+          ),
+        ],
+        child: MaterialApp.router(
+          theme: ThemeData(
+              textTheme:
+                  GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme)),
+          routerConfig: _route,
+        ),
       ),
     );
   }
 }
 
 final GoRouter _route = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home',
   routes: <RouteBase>[
     GoRoute(
         path: "/",

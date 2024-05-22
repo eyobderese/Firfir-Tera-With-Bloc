@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'edit_profile.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -32,11 +31,7 @@ class Profile extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditProfile()),
-                  );
+                  context.goNamed("/edit-profile");
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.orange),

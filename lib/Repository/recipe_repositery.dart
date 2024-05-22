@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:firfir_tera/model/recipe.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class RecipeRepository {
   Future<List<Recipe>> fetchRecipes(String query, String filter) async {
@@ -6,6 +11,47 @@ class RecipeRepository {
     // For demonstration, returning an empty list
     await Future.delayed(const Duration(seconds: 3));
     return recipeList;
+  }
+
+  Future<String> saveRecipe({
+    required String name,
+    required String serves,
+    required String cookingTime,
+    required List<Map<String, String>> ingredients,
+    XFile? image,
+  }) async {
+    var uri = Uri.parse('https://yourserver.com/api/recipes');
+    var request = http.MultipartRequest('POST', uri);
+
+    // Add text fields
+    request.fields['name'] = name;
+    request.fields['serves'] = serves;
+    request.fields['cooking_time'] = cookingTime;
+
+    // Add ingredients as JSON string
+    request.fields['ingredients'] = jsonEncode(ingredients);
+
+    // Add image file
+    if (image != null) {
+      var stream = http.ByteStream(image.openRead());
+      var length = await image.length();
+      var multipartFile = http.MultipartFile(
+        'image',
+        stream,
+        length,
+        filename: path.basename(image.path),
+      );
+      request.files.add(multipartFile);
+    }
+
+    // Send the request
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return ('Recipe uploaded successfully');
+    } else {
+      return ('Failed to upload recipe Status code: ${response.statusCode}');
+    }
   }
 }
 

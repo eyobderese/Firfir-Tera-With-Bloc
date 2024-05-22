@@ -1,5 +1,4 @@
 import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
-import 'package:firfir_tera/model/user.dart';
 import 'package:firfir_tera/bloc/auth/signup/register1/register1_event.dart';
 import 'package:firfir_tera/bloc/auth/signup/register1/register1_state.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
