@@ -1,8 +1,10 @@
+import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
+import 'package:firfir_tera/presentation/screens/edit_profile.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
 import 'package:flutter/material.dart';
 import 'package:firfir_tera/presentation/screens/home.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<RecipeRepository>(
           create: (context) => RecipeRepository(),
         ),
+        RepositoryProvider<ProfileRepository>(
+            create: (context) => ProfileRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -89,8 +93,8 @@ final GoRouter _route = GoRouter(
         name: "/register_3",
         builder: (context, state) => const Register_3()),
     GoRoute(
-        path: "/home/detailed_view",
-        name: "/detailed_view",
+        path: "/detailed_recipe_view",
+        name: "/detailed_recipe_view",
         builder: (context, state) => const DetailedView()),
     GoRoute(
         path: "/admin",
@@ -104,5 +108,9 @@ final GoRouter _route = GoRouter(
         path: "/comment",
         name: "/comment",
         builder: (context, state) => CreateComment()),
+    GoRoute(
+        path: "/eddit_profile",
+        name: "/edit_profile",
+        builder: (context, state) => EditProfile()),
   ],
 );

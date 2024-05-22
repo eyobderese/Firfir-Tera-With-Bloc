@@ -31,7 +31,7 @@ class Profile extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  context.goNamed("/edit-profile");
+                  context.goNamed("/edit_profile");
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.orange),

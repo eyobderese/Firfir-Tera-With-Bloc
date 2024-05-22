@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailedView extends StatefulWidget {
   const DetailedView({super.key});
@@ -64,8 +65,7 @@ class _DetailedViewState extends State<DetailedView> {
                             ),
                             IconButton(
                                 onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/comment');
+                                  context.goNamed("/comment");
                                 },
                                 icon: Icon(Icons.comment))
                           ],
