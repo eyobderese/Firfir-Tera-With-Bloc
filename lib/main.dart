@@ -2,6 +2,7 @@ import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
+import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/edit_profile.dart';
@@ -95,7 +96,13 @@ final GoRouter _route = GoRouter(
     GoRoute(
         path: "/detailed_recipe_view",
         name: "/detailed_recipe_view",
-        builder: (context, state) => const DetailedView()),
+        builder: (context, state) {
+          print(state.extra);
+          final recipe = state.extra;
+          return DetailedView(
+            recipe: recipe,
+          );
+        }),
     GoRoute(
         path: "/admin",
         name: "/admin",

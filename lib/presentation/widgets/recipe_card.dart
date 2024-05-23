@@ -1,29 +1,21 @@
+import 'package:firfir_tera/model/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class RecipeCard extends StatefulWidget {
-  final String imagePath;
-  final String recipeName;
-  final double width;
-  final double height;
-
+class RecipeCard extends StatelessWidget {
+  final Recipe recipe;
   const RecipeCard({
-    required this.imagePath,
-    required this.recipeName,
-    this.width = 200,
-    this.height = 250,
+    required this.recipe,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<RecipeCard> createState() => _RecipeCardState();
-}
-
-class _RecipeCardState extends State<RecipeCard> {
-  @override
   Widget build(BuildContext context) {
+    final double width = 250;
+    final double hight = 200;
+
     return SizedBox(
-      width: widget.width,
+      width: width,
       height: 100,
       child: Card(
         elevation: 4,
@@ -32,7 +24,7 @@ class _RecipeCardState extends State<RecipeCard> {
         ),
         child: InkWell(
           onTap: () {
-            context.goNamed('/detailed_recipe_view');
+            context.go('/detailed_recipe_view', extra: recipe);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -41,15 +33,15 @@ class _RecipeCardState extends State<RecipeCard> {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(12.0)),
                 child: Image.asset(
-                  widget.imagePath,
-                  height: widget.height * 0.9,
+                  recipe.image,
+                  height: height * 0.9,
                   fit: BoxFit.cover,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Text(
-                  widget.recipeName,
+                  recipe.name,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -64,3 +56,6 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 }
+
+final int width = 200;
+final int height = 250;

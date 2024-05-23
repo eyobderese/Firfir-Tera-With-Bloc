@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:firfir_tera/Repository/profileRrepository.dart';
-import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
+import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/edit_profile/edite_profile_bloc.dart';
 import 'package:firfir_tera/bloc/edit_profile/edite_profile_event.dart';
 import 'package:firfir_tera/bloc/edit_profile/edite_profile_state.dart';

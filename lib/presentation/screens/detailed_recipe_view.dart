@@ -1,14 +1,11 @@
+import 'package:firfir_tera/model/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DetailedView extends StatefulWidget {
-  const DetailedView({super.key});
+class DetailedView extends StatelessWidget {
+  final dynamic recipe;
+  DetailedView({super.key, required this.recipe});
 
-  @override
-  State<DetailedView> createState() => _DetailedViewState();
-}
-
-class _DetailedViewState extends State<DetailedView> {
   final List<String> steps = [
     "1. Step 1",
     "2. Step 2",
@@ -54,11 +51,12 @@ class _DetailedViewState extends State<DetailedView> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      context.goNamed("/home");
                                     },
                                     icon: const Icon(Icons.arrow_back),
                                   ),
-                                  const Text("Tibs" //recipe name,
+                                  Text(recipe.name
+                                      //recipe name,
                                       ),
                                 ],
                               ),
@@ -76,8 +74,9 @@ class _DetailedViewState extends State<DetailedView> {
                         Container(
                           height: 260,
                           decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                  image: AssetImage('assets/images/tibs.jpg'),
+                              image: DecorationImage(
+                                  image: AssetImage(recipe
+                                      .image), //TODO here change the hard code image fiele to recipe.image
                                   fit: BoxFit.cover // recipe image
                                   ),
                               borderRadius: BorderRadius.circular(30)),
@@ -121,7 +120,7 @@ class _DetailedViewState extends State<DetailedView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Ingredients",
                           style: TextStyle(
                             fontSize: 18,
@@ -131,11 +130,11 @@ class _DetailedViewState extends State<DetailedView> {
                         SizedBox(height: 20),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: ingredients.length,
+                          itemCount: recipe.ingredients.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(
-                                ingredients[index],
+                                recipe.ingredients[index],
                                 style: TextStyle(fontSize: 20),
                               ),
                             );

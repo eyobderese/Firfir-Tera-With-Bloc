@@ -1,4 +1,4 @@
-import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
+import 'package:firfir_tera/bloc/form_submistion_status.dart';
 
 class Register3State {
   final String imageData;

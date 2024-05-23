@@ -12,39 +12,32 @@ class _CreateCommentState extends State<CreateComment> {
   final TextEditingController commentController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final ScrollController _scrollController = ScrollController();
-  List filedata = [];
-
-  @override
-  void initState() {
-    filedata = [
-      {
-        'name': 'Chuks Okwuenu',
-        'pic': 'https://picsum.photos/300/30',
-        'message': 'I love to code',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Biggi Man',
-        'pic':
-            'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Tunde Martins',
-        'pic': 'assets/images/kikil.jpg',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-      {
-        'name': 'Biggi Man',
-        'pic': 'https://picsum.photos/300/30',
-        'message': 'Very cool',
-        'date': '2021-01-01 12:00:00'
-      },
-    ];
-    super.initState();
-  }
+  List filedata = [
+    {
+      'name': 'Chuks Okwuenu',
+      'pic': 'https://picsum.photos/300/30',
+      'message': 'I love to code',
+      'date': '2021-01-01 12:00:00'
+    },
+    {
+      'name': 'Biggi Man',
+      'pic': 'https://www.adeleyeayodeji.com/img/IMG_20200522_121756_834_2.jpg',
+      'message': 'Very cool',
+      'date': '2021-01-01 12:00:00'
+    },
+    {
+      'name': 'Tunde Martins',
+      'pic': 'assets/images/kikil.jpg',
+      'message': 'Very cool',
+      'date': '2021-01-01 12:00:00'
+    },
+    {
+      'name': 'Biggi Man',
+      'pic': 'https://picsum.photos/300/30',
+      'message': 'Very cool',
+      'date': '2021-01-01 12:00:00'
+    },
+  ];
 
   void showImageDialog(BuildContext context, String imageUrl) {
     showDialog(

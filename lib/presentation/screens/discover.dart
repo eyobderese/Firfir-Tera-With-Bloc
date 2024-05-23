@@ -64,8 +64,7 @@ class Discover extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return Container(
                                   child: RecipeCard(
-                                    imagePath: state.getRecipes[index].image,
-                                    recipeName: state.getRecipes[index].name,
+                                    recipe: state.getRecipes[index],
                                   ),
                                 );
                               },

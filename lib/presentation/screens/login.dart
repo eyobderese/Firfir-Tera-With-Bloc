@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:firfir_tera/Repository/authRepository.dart';
-import 'package:firfir_tera/bloc/auth/form_submistion_status.dart';
-import 'package:firfir_tera/bloc/auth/login/login_bloc.dart';
-import 'package:firfir_tera/bloc/auth/login/login_event.dart';
-import 'package:firfir_tera/bloc/auth/login/login_state.dart';
+import 'package:firfir_tera/bloc/form_submistion_status.dart';
+import 'package:firfir_tera/bloc/login/login_bloc.dart';
+import 'package:firfir_tera/bloc/login/login_event.dart';
+import 'package:firfir_tera/bloc/login/login_state.dart';
 import 'package:firfir_tera/presentation/widgets/brand_promo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
