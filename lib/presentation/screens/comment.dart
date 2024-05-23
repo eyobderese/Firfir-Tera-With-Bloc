@@ -1,8 +1,12 @@
+import 'package:firfir_tera/model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CreateComment extends StatefulWidget {
-  const CreateComment({super.key});
+  final List<Comment> comments;
+  final String recipeId;
+  const CreateComment(
+      {super.key, required this.comments, required this.recipeId});
 
   @override
   State<CreateComment> createState() => _CreateCommentState();
@@ -58,7 +62,7 @@ class _CreateCommentState extends State<CreateComment> {
     return ListView(
       controller: _scrollController,
       children: [
-        for (var i = 0; i < data.length; i++)
+        for (var i = 0; i < widget.comments.length; i++)
           Padding(
             padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
             child: ListTile(

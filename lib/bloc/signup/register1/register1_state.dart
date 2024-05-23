@@ -14,7 +14,7 @@ class Register1State {
   Register1State({
     this.email = '',
     this.password = '',
-    this.accountType = UserType.customer,
+    this.accountType = UserType.normal,
     this.formStatus = const InitialFormStatus(),
   });
 

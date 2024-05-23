@@ -188,7 +188,7 @@ class Register_1 extends StatelessWidget {
           return DropdownMenuItem<UserType>(
             value: type,
             child: Text(
-              type == UserType.customer ? 'I am a Customer' : 'I am a Cook',
+              type == UserType.normal ? 'I am a Customer' : 'I am a Cook',
               style: const TextStyle(
                 fontSize: 16,
               ),

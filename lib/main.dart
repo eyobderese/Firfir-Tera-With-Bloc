@@ -1,12 +1,15 @@
+import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
+import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/edit_profile.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
+import 'package:firfir_tera/services/fetch_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:firfir_tera/presentation/screens/home.dart';
 import 'package:firfir_tera/presentation/screens/login.dart';
@@ -23,6 +26,7 @@ import 'package:firfir_tera/presentation/screens/onboarding_3.dart';
 import 'presentation/screens/comment.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -41,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<ProfileRepository>(
             create: (context) => ProfileRepository()),
+        RepositoryProvider(
+          create: (context) => AuthRepository(),
+        )
       ],
       child: MultiBlocProvider(
         providers: [
@@ -48,6 +55,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CreateRecipeBloc(
                 recipeRepository: context.read<RecipeRepository>()),
           ),
+          BlocProvider(create: (context) => AuthBloc())
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -112,9 +120,15 @@ final GoRouter _route = GoRouter(
         name: "/create_recipe",
         builder: (context, state) => CreateRecipe()),
     GoRoute(
-        path: "/comment",
-        name: "/comment",
-        builder: (context, state) => CreateComment()),
+      path: "/comment/:recipeId",
+      name: "/comment",
+      builder: (context, state) {
+        final recipeId = state.pathParameters['recipeId'];
+
+        final comments = fetchCommentsByRecipeId(recipeId!);
+        return CreateComment(comments: comments, recipeId: recipeId);
+      },
+    ),
     GoRoute(
         path: "/eddit_profile",
         name: "/edit_profile",

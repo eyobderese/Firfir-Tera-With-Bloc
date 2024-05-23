@@ -63,7 +63,7 @@ class DetailedView extends StatelessWidget {
                             ),
                             IconButton(
                                 onPressed: () {
-                                  context.goNamed("/comment");
+                                  context.go("/comment/:${recipe.id}");
                                 },
                                 icon: Icon(Icons.comment))
                           ],

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:firfir_tera/Repository/authRepository.dart';
+import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/login/login_bloc.dart';
 import 'package:firfir_tera/bloc/login/login_event.dart';
@@ -38,6 +39,7 @@ class Login1 extends StatelessWidget {
             lazy: false,
             create: (context) => LoginBloc(
               authRepo: context.read<AuthRepository>(),
+              authBloc: context.read<AuthBloc>(),
             ),
             child: SingleChildScrollView(
               child: Column(

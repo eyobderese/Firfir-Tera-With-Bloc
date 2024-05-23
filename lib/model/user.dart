@@ -2,14 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/presentation/screens/profile.dart';
 
 class User extends Equatable {
+  final Register1 register1;
+  final Register2 register2;
+  final ProfileImage profileImage;
   const User(
       {required this.register1,
       required this.register2,
       required this.profileImage});
-
-  final Register1 register1;
-  final Register2 register2;
-  final ProfileImage profileImage;
 
   factory User.empty() {
     return User(
@@ -50,7 +49,7 @@ class Register1 extends Equatable {
     return const Register1(
       email: '',
       password: '',
-      accountType: UserType.customer,
+      accountType: UserType.normal,
     );
   }
 
@@ -133,6 +132,6 @@ class ProfileImage extends Equatable {
 }
 
 enum UserType {
-  customer,
+  normal,
   cook,
 }

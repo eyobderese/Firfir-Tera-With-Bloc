@@ -1,4 +1,7 @@
+import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
+import 'package:firfir_tera/bloc/auth/auth_even.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class Profile extends StatelessWidget {
@@ -43,6 +46,7 @@ class Profile extends StatelessWidget {
               const SizedBox(height: 20),
               OutlinedButton(
                 onPressed: () {
+                  context.read<AuthBloc>().add(LoggedOut());
                   context.goNamed("/login");
                 },
                 style: ButtonStyle(

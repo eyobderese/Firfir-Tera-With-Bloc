@@ -1,3 +1,4 @@
+import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_event.dart';
@@ -19,6 +20,7 @@ class Register_3 extends StatelessWidget {
       lazy: false,
       create: (context) => Register3Bloc(
         userRepo: context.read<UserRepository>(),
+        authRepo: context.read<AuthRepository>(),
       ),
       child: const _Register_3(),
     );
@@ -56,7 +58,7 @@ class _Register_3State extends State<_Register_3> {
           _showSnackBar(context, formStatus.exception.toString());
         } else if (formStatus is SubmissionSuccess) {
           _showSnackBar(context, 'Success');
-          context.goNamed("/home");
+          context.goNamed("/login");
         }
       },
       child: Scaffold(

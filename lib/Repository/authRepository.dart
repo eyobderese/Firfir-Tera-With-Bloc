@@ -1,18 +1,25 @@
+import 'package:firfir_tera/model/user.dart';
+import 'package:firfir_tera/services/authService.dart';
+
 class AuthRepository {
-  Future<void> login(userName, password) async {
-    if (userName == 'admin123' && password == 'admin123') {
-      print('attempting login');
-      await Future.delayed(Duration(seconds: 3));
-      print('logged in');
-    } else {
-      throw Exception('failed log in');
+  final AuthService _authService = AuthService();
+
+  Future<String?> login(String username, String password) async {
+    try {
+      final respons = await _authService.login(username, password);
+      return respons;
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
-  Future<void> signup() async {
-    print('attempting login');
-    await Future.delayed(Duration(seconds: 3));
-    print('logged in');
-    throw Exception('failed log in');
+  Future<void> signup(String firstName, String lastName, String email,
+      String password, String role, String bio) async {
+    try {
+      await _authService.signUp(
+          firstName, lastName, email, password, role, bio);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }
