@@ -3,12 +3,13 @@ import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
+import 'package:firfir_tera/bloc/auth/auth_even.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
-import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/edit_profile.dart';
 import 'package:firfir_tera/presentation/screens/register_3.dart';
+import 'package:firfir_tera/presentation/screens/splash_screen.dart';
 import 'package:firfir_tera/services/fetch_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:firfir_tera/presentation/screens/home.dart';
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CreateRecipeBloc(
                 recipeRepository: context.read<RecipeRepository>()),
           ),
-          BlocProvider(create: (context) => AuthBloc())
+          BlocProvider(create: (context) => AuthBloc()..add(AppStarted()))
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -69,10 +70,15 @@ class MyApp extends StatelessWidget {
 }
 
 final GoRouter _route = GoRouter(
-  initialLocation: '/home',
+  initialLocation: '/',
   routes: <RouteBase>[
     GoRoute(
-        path: "/",
+      path: "/",
+      name: "/",
+      builder: (context, state) => SplashScreen(),
+    ),
+    GoRoute(
+        path: "/onBoarding_1",
         name: "/onBoarding_1",
         builder: (context, state) => const OnBoarding_1()),
     GoRoute(
