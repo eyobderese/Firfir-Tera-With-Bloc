@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
@@ -8,22 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'dart:io';
-import 'dart:convert';
 
 class Register_3 extends StatelessWidget {
   const Register_3({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      lazy: false,
-      create: (context) => Register3Bloc(
-        userRepo: context.read<UserRepository>(),
-        authRepo: context.read<AuthRepository>(),
-      ),
-      child: const _Register_3(),
-    );
+    return _Register_3();
   }
 }
 
@@ -35,20 +28,6 @@ class _Register_3 extends StatefulWidget {
 }
 
 class _Register_3State extends State<_Register_3> {
-  Future<void> _getImage(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      final bytes = await pickedImage.readAsBytes();
-      final base64Image = base64Encode(bytes);
-      final imageName = pickedImage.path.split('/').last;
-      context
-          .read<Register3Bloc>()
-          .add(UploadImageEvent(base64Image, imageName));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<Register3Bloc, Register3State>(
@@ -112,7 +91,10 @@ class _Register_3State extends State<_Register_3> {
                   height: 70,
                 ),
                 GestureDetector(
-                  onTap: () => _getImage(context),
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    builder: (context) => bottomSheet(context),
+                  ),
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: Container(
@@ -125,11 +107,9 @@ class _Register_3State extends State<_Register_3> {
                       ),
                       child: BlocBuilder<Register3Bloc, Register3State>(
                         builder: (context, state) {
-                          if (state.isImagePosted) {
-                            return Image.memory(
-                              base64Decode(state.imageData),
-                              width: 150,
-                              height: 150,
+                          if (state.image != null) {
+                            return Image.file(
+                              File(state.image!.path),
                               fit: BoxFit.cover,
                             );
                           } else {
@@ -189,6 +169,45 @@ class _Register_3State extends State<_Register_3> {
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Widget bottomSheet(BuildContext context) {
+    return Container(
+      height: 100,
+      width: double.infinity,
+      margin: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const Text('Choose Image', style: TextStyle(fontSize: 20)),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton.icon(
+                onPressed: () {
+                  context
+                      .read<Register3Bloc>()
+                      .add(const UploadImageEvent(ImageSource.camera));
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.camera),
+                label: const Text('Camera'),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  context
+                      .read<Register3Bloc>()
+                      .add(const UploadImageEvent(ImageSource.gallery));
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.image),
+                label: const Text('Gallery'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

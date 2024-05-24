@@ -1,21 +1,16 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:firfir_tera/services/recipe_service.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/services/authService.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
 
 class RecipeRepository {
   final AuthService _authService = AuthService();
   final RecipeService _recipeService = RecipeService();
 
   Future<List<Recipe>> fetchRecipes(String query, String filter) async {
-    // Implement the logic to fetch recipes based on query and filter
-    // For demonstration, returning an empty list
-    await Future.delayed(const Duration(seconds: 3));
+    final List<Recipe> recipeList =
+        await _recipeService.searchRecipes(query, filter);
+    print(recipeList);
     return recipeList;
   }
 

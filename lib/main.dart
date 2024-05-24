@@ -5,6 +5,7 @@ import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/auth/auth_even.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
+import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/edit_profile.dart';
@@ -56,7 +57,16 @@ class MyApp extends StatelessWidget {
             create: (context) => CreateRecipeBloc(
                 recipeRepository: context.read<RecipeRepository>()),
           ),
-          BlocProvider(create: (context) => AuthBloc()..add(AppStarted()))
+          BlocProvider(
+            create: (context) => AuthBloc()..add(AppStarted()),
+          ),
+          BlocProvider(
+            lazy: false,
+            create: (context) => Register3Bloc(
+              userRepo: context.read<UserRepository>(),
+              authRepo: context.read<AuthRepository>(),
+            ),
+          ),
         ],
         child: MaterialApp.router(
           theme: ThemeData(

@@ -1,5 +1,6 @@
 import 'package:firfir_tera/model/user.dart';
 import 'package:firfir_tera/services/authService.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthRepository {
   final AuthService _authService = AuthService();
@@ -14,10 +15,10 @@ class AuthRepository {
   }
 
   Future<void> signup(String firstName, String lastName, String email,
-      String password, String role, String bio) async {
+      String password, String role, String bio, XFile image) async {
     try {
       await _authService.signUp(
-          firstName, lastName, email, password, role, bio);
+          firstName, lastName, email, password, role, bio, image);
     } catch (e) {
       throw Exception(e);
     }

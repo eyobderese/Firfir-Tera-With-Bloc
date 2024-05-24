@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+
 import '../model/user.dart';
 
 class UserRepository {
@@ -41,16 +43,12 @@ class UserRepository {
 
 // it only have imageName and imageData
   Future<void> updateProfileImage({
-    required String imageName,
-    required String imageData,
+    required XFile image,
   }) async {
     _user ??= User.empty();
     await Future.delayed(const Duration(seconds: 1));
     _user = _user?.copyWith(
-      profileImage: ProfileImage(
-        imageName: imageName,
-        imageData: imageData,
-      ),
+      profileImage: ProfileImage(image: image),
     );
   }
 }

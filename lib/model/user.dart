@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/presentation/screens/profile.dart';
+import 'package:image_picker/image_picker.dart';
 
 class User extends Equatable {
   final Register1 register1;
@@ -105,30 +106,23 @@ class Register2 extends Equatable {
 }
 
 class ProfileImage extends Equatable {
-  const ProfileImage({
-    required this.imageName,
-    required this.imageData,
-  });
+  const ProfileImage({required this.image});
 
-  final String imageName;
-  final String imageData;
+  final XFile image;
 
-  ProfileImage.empty()
-      : imageName = '',
-        imageData = '';
+  ProfileImage.empty() : image = XFile('');
 
   ProfileImage copyWith({
     String? imageName,
     String? imageData,
   }) {
     return ProfileImage(
-      imageName: imageName ?? this.imageName,
-      imageData: imageData ?? this.imageData,
+      image: image,
     );
   }
 
   @override
-  List<Object?> get props => [imageName, imageData];
+  List<Object?> get props => [image];
 }
 
 enum UserType {

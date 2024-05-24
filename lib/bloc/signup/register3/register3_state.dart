@@ -1,27 +1,24 @@
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Register3State {
-  final String imageData;
-  final String imageName;
+  final XFile? image;
   final FormSubmissionStatus formStatus;
   final bool isImagePosted;
 
   Register3State(
-      {this.imageData = '',
-      this.imageName = '',
+      {this.image,
       this.formStatus = const InitialFormStatus(),
       this.isImagePosted = false});
 
   Register3State copyWith({
-    String? imageData,
-    String? imageName,
     FormSubmissionStatus? formStatus,
+    XFile? image,
   }) {
     return Register3State(
-      imageData: imageData ?? this.imageData,
-      imageName: imageName ?? this.imageName,
+      image: image ?? this.image,
       formStatus: formStatus ?? this.formStatus,
-      isImagePosted: imageName != null && imageName.isNotEmpty,
+      isImagePosted: image != null,
     );
   }
 }
