@@ -11,13 +11,15 @@ class DiscoverBloc extends Bloc<DiscoverEvent, DiscoverState> {
     on<FilterChanged>((event, emit) async {
       emit(DiscoverLoading(filtter: event.filter, query: state.query));
       try {
-        state.copyWith(filtter: event.filter);
+        // state.copyWith(filtter: event.filter);
         final recipes =
             await recipeRepository.fetchRecipes(state.query, event.filter);
         emit(
             DiscoverLoaded(recipes, filtter: event.filter, query: state.query));
       } catch (e) {
+        print(e.toString());
         emit(DiscoverError(e.toString()));
+        emit(DiscoverInitial(recipeList));
       }
     });
 
@@ -30,9 +32,11 @@ class DiscoverBloc extends Bloc<DiscoverEvent, DiscoverState> {
       try {
         final recipes =
             await recipeRepository.fetchRecipes(state.query, state.filtter);
+        print(recipes);
         emit(DiscoverLoaded(recipes));
       } catch (e) {
         emit(DiscoverError(e.toString()));
+        emit(DiscoverInitial(recipeList));
       }
     });
   }

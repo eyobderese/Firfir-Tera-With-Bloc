@@ -138,7 +138,11 @@ Widget SearchFormField(TextEditingController searchController) {
       controller: searchController,
       decoration: InputDecoration(
         hintText: "recipe name",
-        prefixIcon: const Icon(Icons.search),
+        prefixIcon: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              context.read<DiscoverBloc>().add(QuerySummited());
+            }),
         suffixIcon: IconButton(
           icon: const Icon(Icons.cancel),
           onPressed: () {

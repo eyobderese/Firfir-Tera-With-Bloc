@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -64,27 +67,32 @@ class AuthService {
   }
 
   Future<void> signUp(String firstName, String lastName, String email,
-      String password, String role, String bio) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/signup'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'password': password,
-        'role': role,
-        'bio': bio,
-      }),
-    );
-    print(role);
-    print(jsonDecode(response.body));
-    print(response.statusCode);
+      String password, String role, String bio, XFile image) async {
+    var uri = Uri.parse('$_baseUrl/signup');
+    var request = http.MultipartRequest('POST', uri);
+    request.fields['firstName'] = firstName;
+    request.fields['lastName'] = lastName;
+    request.fields['email'] = email;
+    request.fields['password'] = password;
+    request.fields['role'] = role;
+    request.fields['bio'] = bio;
 
+    File imageFile = File(image!.path);
+    String extension = imageFile.path.split('.').last;
+    if (extension != 'jpg' && extension != 'png') {
+      throw Exception('The image file must be a jpg or png file');
+    }
+    var stream = http.ByteStream(image.openRead());
+    var length = await image.length();
+    var multipartFile = http.MultipartFile('image', stream, length,
+        filename: imageFile.path, contentType: MediaType('image', extension));
+    request.files.add(multipartFile);
+    var response = await request.send();
+    print(response.statusCode);
     if (response.statusCode == 201) {
       print('User signed up successfully.');
     } else {
-      throw Exception(response.body);
+      throw Exception(response.statusCode);
     }
   }
 }

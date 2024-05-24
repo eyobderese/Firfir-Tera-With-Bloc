@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firfir_tera/services/authService.dart';
 import 'package:http/http.dart' as http;
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:http_parser/http_parser.dart';
@@ -35,10 +36,10 @@ class RecipeService {
         'Bearer $token'; // adding token to your request
     request.fields['name'] = name;
     request.fields['people'] = serves;
-    request.fields['cooking_time'] = cookingTime;
+    request.fields['cookTime'] = cookingTime;
     request.fields['description'] = description;
     request.fields['type'] = category;
-    request.fields['fasting'] = 'false'; // Hardcoded for now
+    request.fields['fasting'] = "false"; // Hardcoded for now
     request.fields['cook_id'] =
         cookId; //TODO change the hardcoded with userId from AuthService
     // Add ingredients as JSON string
@@ -73,6 +74,28 @@ class RecipeService {
     } else {
       throw Exception(
           'Failed to upload recipe Status code: ${response.statusCode}');
+    }
+  }
+
+  // create a method that fetches recipes using keyword for search and category for filter,
+
+  Future<List<Recipe>> searchRecipes(String query, String filter) async {
+    final token = await AuthService().getToken();
+    final response = await http.get(
+      Uri.parse(
+          'http://10.0.2.2:3000/recipes/query?keyword=$query&category=$filter'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Recipe.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch recipes');
     }
   }
 }
