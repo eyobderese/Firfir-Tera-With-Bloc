@@ -55,4 +55,22 @@ class RecipeCookingTimeChanged extends CreateRecipeEvent {
   List<Object> get props => [cookingTime];
 }
 
+class RecipeDescriptionChanged extends CreateRecipeEvent {
+  final String recipeDescription;
+
+  const RecipeDescriptionChanged({required this.recipeDescription});
+
+  @override
+  List<Object> get props => [recipeDescription];
+}
+
+class RecipeCategoryChanged extends CreateRecipeEvent {
+  final String recipeCategory;
+
+  const RecipeCategoryChanged({required this.recipeCategory});
+
+  @override
+  List<Object> get props => [recipeCategory];
+}
+
 class SubmitRecipe extends CreateRecipeEvent {}

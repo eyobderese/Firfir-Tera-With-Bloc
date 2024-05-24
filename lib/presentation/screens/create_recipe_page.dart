@@ -1,11 +1,14 @@
 // create_recipe_screen.dart
 
 import 'dart:io';
+import 'package:firfir_tera/bloc/Home/home_bloc.dart';
+import 'package:firfir_tera/bloc/Home/home_event.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_event.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_state.dart';
 import 'package:firfir_tera/presentation/screens/discover.dart';
+import 'package:firfir_tera/presentation/widgets/meal_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -29,11 +32,7 @@ class CreateRecipe extends StatelessWidget {
             listener: (context, state) => {
               if (state.formSubmissionStatus is SubmissionSuccess)
                 {
-                  context.goNamed("/home"),
-                }
-              else if (state.formSubmissionStatus is FormSubmitting)
-                {
-                  const Center(child: CircularProgressIndicator()),
+                  context.read<HomeBloc>().add(HomeEventIndexSelected(0)),
                 }
               else if (state.formSubmissionStatus is SubmissionFailed)
                 {
@@ -49,206 +48,228 @@ class CreateRecipe extends StatelessWidget {
             },
             child: BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
                 builder: (context, state) {
-              if (state.formSubmissionStatus is FormSubmitting) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return ListView(
-                  children: [
-                    Row(
+              return ListView(
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.goNamed("/home");
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Text('Create Recipe',
+                      style: GoogleFonts.firaSans(fontSize: 40)),
+                  const SizedBox(height: 20),
+                  BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
+                    builder: (context, state) {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: state.image == null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.asset(
+                                        'assets/images/placeholder.png',
+                                        fit: BoxFit.cover),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.file(File(state.image!.path),
+                                        fit: BoxFit.cover),
+                                  ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 20,
+                            child: IconButton(
+                              icon:
+                                  const Icon(Icons.edit, color: Colors.orange),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (builder) => bottomSheet(context));
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  recipeNameField(context),
+                  const SizedBox(height: 20),
+                  serveField(context),
+                  const SizedBox(height: 20),
+                  cockTimeField(context),
+                  const SizedBox(height: 20),
+                  description(context),
+                  const SizedBox(height: 20),
+                  MealTypeDropdown(),
+                  const SizedBox(height: 20),
+                  const Text("Ingredients",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
+                  BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
+                    builder: (context, state) {
+                      return ListView.separated(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemCount: state.controllers.length ~/ 2,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: buildTextField(
+                                    state.controllers[index * 2],
+                                    'Ingredient ${index + 1}'),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                flex: 2,
+                                child: buildTextField(
+                                    state.controllers[index * 2 + 1], 'weight'),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: () => context
+                                    .read<CreateRecipeBloc>()
+                                    .add(RemoveLine(index * 2)),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<CreateRecipeBloc>().add(AddLine());
+                    },
+                    child: const Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            context.goNamed("/home");
-                          },
-                          icon: const Icon(Icons.arrow_back),
+                        Icon(
+                          Icons.add,
+                          color: Colors.black,
+                          size: 30,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "Add Ingredient",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15),
-                    Text('Create Recipe',
-                        style: GoogleFonts.firaSans(fontSize: 40)),
-                    const SizedBox(height: 20),
-                    BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
-                      builder: (context, state) {
-                        return Stack(
-                          children: [
-                            Container(
-                              height: 200,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: state.image == null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Image.asset(
-                                          'assets/images/placeholder.png',
-                                          fit: BoxFit.cover),
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Image.file(File(state.image!.path),
-                                          fit: BoxFit.cover),
-                                    ),
-                            ),
-                            Positioned(
-                              top: 10,
-                              right: 20,
-                              child: IconButton(
-                                icon: const Icon(Icons.edit,
-                                    color: Colors.orange),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: (builder) =>
-                                          bottomSheet(context));
-                                },
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      textAlign: TextAlign.end,
-                      onChanged: (value) {
-                        context
-                            .read<CreateRecipeBloc>()
-                            .add(RecipeNameChanged(name: value));
-                      },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(20),
-                        prefixIcon: const Icon(Icons.local_dining,
-                            color: Colors.orange),
-                        prefixText: "Recipe Name    ",
-                        prefixStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                        hintText: "Enter Recipe Name",
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.orange),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      onChanged: (value) => context
-                          .read<CreateRecipeBloc>()
-                          .add(RecipeServesChanged(serves: value)),
-                      textAlign: TextAlign.end,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(20),
-                        prefixIcon:
-                            const Icon(Icons.person, color: Colors.orange),
-                        prefixText: "Serves    ",
-                        prefixStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                        hintText: "Enter Number of Serves",
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.orange),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      onChanged: (value) => context
-                          .read<CreateRecipeBloc>()
-                          .add(RecipeCookingTimeChanged(cookingTime: value)),
-                      textAlign: TextAlign.end,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(20),
-                        prefixIcon:
-                            const Icon(Icons.access_time, color: Colors.orange),
-                        prefixText: "Cooking Time    ",
-                        prefixStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                        hintText: "Enter Cooking Time in Minutes",
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.orange),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text("Ingredients",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 20),
-                    BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
-                      builder: (context, state) {
-                        return ListView.separated(
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: state.controllers.length ~/ 2,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 8),
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: buildTextField(
-                                      state.controllers[index * 2],
-                                      'Ingredient ${index + 1}'),
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  flex: 2,
-                                  child: buildTextField(
-                                      state.controllers[index * 2 + 1],
-                                      'weight'),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle),
-                                  onPressed: () => context
-                                      .read<CreateRecipeBloc>()
-                                      .add(RemoveLine(index * 2)),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<CreateRecipeBloc>().add(AddLine());
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            "Add Ingredient",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _SaveButton(),
-                  ],
-                );
-              }
+                  ),
+                  _SaveButton(),
+                ],
+              );
             }),
           ),
+        ),
+      ),
+    );
+  }
+
+  TextField cockTimeField(BuildContext context) {
+    return TextField(
+      onChanged: (value) => context
+          .read<CreateRecipeBloc>()
+          .add(RecipeCookingTimeChanged(cookingTime: value)),
+      textAlign: TextAlign.end,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        prefixIcon: const Icon(Icons.access_time, color: Colors.orange),
+        prefixText: "Cooking Time    ",
+        prefixStyle: const TextStyle(
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        hintText: "Enter Cooking Time in Minutes",
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.orange),
+        ),
+      ),
+    );
+  }
+
+  TextField serveField(BuildContext context) {
+    return TextField(
+      onChanged: (value) => context
+          .read<CreateRecipeBloc>()
+          .add(RecipeServesChanged(serves: value)),
+      textAlign: TextAlign.end,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        prefixIcon: const Icon(Icons.person, color: Colors.orange),
+        prefixText: "Serves    ",
+        prefixStyle: const TextStyle(
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        hintText: "Enter Number of Serves",
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.orange),
+        ),
+      ),
+    );
+  }
+
+  TextField recipeNameField(BuildContext context) {
+    return TextField(
+      textAlign: TextAlign.end,
+      onChanged: (value) {
+        context.read<CreateRecipeBloc>().add(RecipeNameChanged(name: value));
+      },
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        prefixIcon: const Icon(Icons.local_dining, color: Colors.orange),
+        prefixText: "Recipe Name    ",
+        prefixStyle: const TextStyle(
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        hintText: "Enter Recipe Name",
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.orange),
+        ),
+      ),
+    );
+  }
+
+  TextField description(BuildContext context) {
+    return TextField(
+      onChanged: (value) => context
+          .read<CreateRecipeBloc>()
+          .add(RecipeDescriptionChanged(recipeDescription: value)),
+      textAlign: TextAlign.end,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        prefixIcon: const Icon(Icons.edit, color: Colors.orange),
+        prefixText: "description    ",
+        prefixStyle: const TextStyle(
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        hintText: "Enter Recipe discription",
+        filled: true,
+        fillColor: Colors.grey[100],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.orange),
         ),
       ),
     );

@@ -1,17 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:firfir_tera/services/recipe_service.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:firfir_tera/model/recipe.dart';
-import 'package:firfir_tera/services/authService.dart';
 import 'package:http/http.dart' as http;
+import 'package:firfir_tera/model/recipe.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
-class RecipeRepository {
-  final AuthService _authService = AuthService();
-  final RecipeService _recipeService = RecipeService();
-
+class RecipeService {
   Future<List<Recipe>> fetchRecipes(String query, String filter) async {
     // Implement the logic to fetch recipes based on query and filter
     // For demonstration, returning an empty list
@@ -19,7 +14,7 @@ class RecipeRepository {
     return recipeList;
   }
 
-  Future<String> saveRecipe({
+  Future<String> uploadRecipe({
     required String name,
     required String serves,
     required String cookingTime,
@@ -27,26 +22,57 @@ class RecipeRepository {
     required String category,
     required List<Map<String, String>> ingredients,
     XFile? image,
+    required String cookId,
+    required String token,
   }) async {
-    final token = await _authService.getToken();
-    final cookId = await _authService.getUserId();
-    print(cookId);
+    var uri = Uri.parse('http://10.0.2.2:3000/recipes/new');
+    var request = http.MultipartRequest('POST', uri);
 
-    try {
-      final response = await _recipeService.uploadRecipe(
-        name: name,
-        serves: serves,
-        cookingTime: cookingTime,
-        description: description,
-        category: category,
-        ingredients: ingredients,
-        image: image,
-        cookId: cookId!,
-        token: token!,
-      );
-      return response;
-    } catch (e) {
-      throw Exception(e);
+    // final userId = await AuthService().getUserId();
+
+    // Add text fields
+    request.headers['Authorization'] =
+        'Bearer $token'; // adding token to your request
+    request.fields['name'] = name;
+    request.fields['people'] = serves;
+    request.fields['cooking_time'] = cookingTime;
+    request.fields['description'] = description;
+    request.fields['type'] = category;
+    request.fields['fasting'] = 'false'; // Hardcoded for now
+    request.fields['cook_id'] =
+        cookId; //TODO change the hardcoded with userId from AuthService
+    // Add ingredients as JSON string
+    request.fields['ingredients'] = jsonEncode(ingredients);
+    request.fields['steps'] = jsonEncode([
+      'Mix the dry ingredients.',
+      'Add the wet ingredients and mix until smooth.',
+      'Cook on a hot griddle until golden brown.'
+    ]);
+
+    File imageFile = File(image!.path);
+
+    String extension = path.extension(imageFile.path).toLowerCase();
+    if (extension != '.jpg' && extension != '.png') {
+      throw Exception('The image file must be a jpg or png file');
+    }
+    // Add image file
+
+    var stream = http.ByteStream(image.openRead());
+    var length = await image.length();
+    var multipartFile = http.MultipartFile('image', stream, length,
+        filename: path.basename(imageFile.path),
+        contentType: MediaType('image', extension.substring(1)));
+    request.files.add(multipartFile);
+
+    // Send the request
+    var response = await request.send();
+    print(response.statusCode);
+
+    if (response.statusCode == 201) {
+      return ('Recipe uploaded successfully');
+    } else {
+      throw Exception(
+          'Failed to upload recipe Status code: ${response.statusCode}');
     }
   }
 }

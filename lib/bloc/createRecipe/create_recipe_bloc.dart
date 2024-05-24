@@ -18,44 +18,67 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           recipeName: '',
           recipeServes: '',
           recipeCookingtime: '',
+          recipeCatagory: 'Breakfast',
+          recipeDescription: '',
           formSubmissionStatus: const InitialFormStatus(),
         )) {
     on<AddLine>((event, emit) {
       final controllers = List<TextEditingController>.from(state.controllers);
       controllers.add(TextEditingController());
       controllers.add(TextEditingController());
-      emit(state.copyWith(controllers: controllers));
+      emit(state.copyWith(
+          controllers: controllers,
+          formSubmissionStatus: const InitialFormStatus()));
     });
 
     on<RemoveLine>((event, emit) {
       final controllers = List<TextEditingController>.from(state.controllers);
       controllers.removeAt(event.index);
       controllers.removeAt(event.index);
-      emit(state.copyWith(controllers: controllers));
+      emit(state.copyWith(
+          controllers: controllers,
+          formSubmissionStatus: const InitialFormStatus()));
     });
 
     on<PickImage>((event, emit) async {
       final pickedFile = await _picker.pickImage(source: event.source);
       if (pickedFile != null) {
-        emit(state.copyWith(image: pickedFile));
+        emit(state.copyWith(
+            image: pickedFile,
+            formSubmissionStatus: const InitialFormStatus()));
       }
       print(pickedFile?.path);
     });
 
     on<RecipeNameChanged>((event, emit) {
-      emit(state.copyWith(recipeName: event.name));
+      emit(state.copyWith(
+          recipeName: event.name,
+          formSubmissionStatus: const InitialFormStatus()));
+    });
+    on<RecipeCategoryChanged>((event, emit) {
+      emit(state.copyWith(
+          recipeCatagory: event.recipeCategory,
+          formSubmissionStatus: const InitialFormStatus()));
+    });
+    on<RecipeDescriptionChanged>((event, emit) {
+      emit(state.copyWith(
+          recipeDescription: event.recipeDescription,
+          formSubmissionStatus: const InitialFormStatus()));
     });
 
     on<RecipeServesChanged>((event, emit) {
-      emit(state.copyWith(recipeServes: event.serves));
+      emit(state.copyWith(
+          recipeServes: event.serves,
+          formSubmissionStatus: const InitialFormStatus()));
     });
 
     on<RecipeCookingTimeChanged>((event, emit) {
-      emit(state.copyWith(recipeCookingtime: event.cookingTime));
+      emit(state.copyWith(
+          recipeCookingtime: event.cookingTime,
+          formSubmissionStatus: const InitialFormStatus()));
     });
 
     on<SubmitRecipe>((event, emit) async {
-      print("hi ........");
       emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
 
       List<Map<String, String>> ingredients = [];
@@ -77,15 +100,24 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           name: state.recipeName,
           serves: state.recipeServes,
           cookingTime: state.recipeCookingtime,
+          category: state.recipeCatagory,
+          description: state.recipeDescription,
           ingredients: ingredients,
           image: state.image,
         );
         emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
       } catch (e) {
-        emit(state.copyWith(
-            formSubmissionStatus: SubmissionFailed(e as Exception)));
+        if (e is Exception) {
+          emit(state.copyWith(formSubmissionStatus: SubmissionFailed(e)));
+        } else {
+          emit(state.copyWith(
+              formSubmissionStatus:
+                  SubmissionFailed(Exception('An error occurred'))));
+        }
       }
-      print(state.formSubmissionStatus);
+      if (state.formSubmissionStatus is SubmissionSuccess) {
+        print("am her------");
+      }
     });
   }
 

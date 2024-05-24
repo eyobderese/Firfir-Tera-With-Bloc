@@ -16,11 +16,12 @@ class AuthService {
       final data = jsonDecode(response.body);
       final token = data['token'];
       final userId = data["id"];
-
-      print(token);
+      final role = data["role"][0];
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', token);
-      await prefs.setString('useId', userId);
+      await prefs.setString('userId', userId);
+      await prefs.setString('role', role);
+
       return token;
     } else {
       throw Exception(response.body);
@@ -47,6 +48,7 @@ class AuthService {
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('userId');
   }
 
   Future<String?> getUserId() async {

@@ -10,6 +10,8 @@ class CreateRecipeState {
   final String recipeName;
   final String recipeServes;
   final String recipeCookingtime;
+  final String recipeDescription;
+  final String recipeCatagory;
 
   CreateRecipeState(
       {required this.controllers,
@@ -17,7 +19,9 @@ class CreateRecipeState {
       required this.recipeServes,
       required this.recipeCookingtime,
       this.image,
-      required this.formSubmissionStatus});
+      required this.formSubmissionStatus,
+      required this.recipeDescription,
+      required this.recipeCatagory});
 
   CreateRecipeState copyWith(
       {List<TextEditingController>? controllers,
@@ -25,13 +29,17 @@ class CreateRecipeState {
       FormSubmissionStatus? formSubmissionStatus,
       String? recipeName,
       String? recipeServes,
-      String? recipeCookingtime}) {
+      String? recipeCookingtime,
+      String? recipeDescription,
+      String? recipeCatagory}) {
     return CreateRecipeState(
         controllers: controllers ?? this.controllers,
         image: image ?? this.image,
         formSubmissionStatus: formSubmissionStatus ?? this.formSubmissionStatus,
         recipeName: recipeName ?? this.recipeName,
         recipeServes: recipeServes ?? this.recipeServes,
-        recipeCookingtime: recipeCookingtime ?? this.recipeCookingtime);
+        recipeCookingtime: recipeCookingtime ?? this.recipeCookingtime,
+        recipeDescription: recipeDescription ?? this.recipeDescription,
+        recipeCatagory: recipeCatagory ?? this.recipeCatagory);
   }
 }

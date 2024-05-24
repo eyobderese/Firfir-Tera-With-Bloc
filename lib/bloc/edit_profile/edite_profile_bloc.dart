@@ -39,6 +39,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     on<ProfileSubmitted>((event, emit) async {
       emit(state.copyWith(formStatus: FormSubmitting()));
 
+      print(state.imageData!.path);
+
       try {
         if (state.name != null && state.email != null && state.bio != null) {
           await profileRepository.updateProfile(

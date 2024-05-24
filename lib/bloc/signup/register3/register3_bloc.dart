@@ -22,6 +22,8 @@ class Register3Bloc extends Bloc<Register3Event, Register3State> {
     on<Registration3SubmittedEvent>((event, emit) async {
       emit(state.copyWith(
           imageName: state.imageName, formStatus: FormSubmitting()));
+      print(state.imageData);
+      print(state.imageData);
 
       try {
         await userRepo.updateProfileImage(
