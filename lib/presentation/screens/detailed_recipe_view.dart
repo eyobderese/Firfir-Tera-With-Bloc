@@ -1,32 +1,11 @@
 import 'package:firfir_tera/model/recipe.dart';
+import 'package:firfir_tera/presentation/screens/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DetailedView extends StatelessWidget {
-  final dynamic recipe;
+  final Recipe recipe;
   DetailedView({super.key, required this.recipe});
-
-  final List<String> steps = [
-    "1. Step 1",
-    "2. Step 2",
-    "3. Step 3",
-    "3. Step 3",
-    "3. Step 3",
-    "3. Step 3",
-    "3. Step 3",
-    "3. Step 3",
-  ];
-
-  final List<String> ingredients = [
-    "1. Ingredients 1",
-    "2. Ingredients 2",
-    "3. Ingredients 3",
-    "3. Ingredients 3",
-    "3. Ingredients 3",
-    "3. Ingredients 3",
-    "3. Ingredients 3",
-    "3. Ingredients 3",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +42,13 @@ class DetailedView extends StatelessWidget {
                             ),
                             IconButton(
                                 onPressed: () {
-                                  context.go("/comment/:${recipe.id}");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CommentScreen(recipeId: recipe.id!),
+                                    ),
+                                  );
                                 },
                                 icon: Icon(Icons.comment))
                           ],
@@ -162,11 +147,11 @@ class DetailedView extends StatelessWidget {
                         ),
                         ListView.builder(
                           shrinkWrap: true,
-                          itemCount: steps.length,
+                          itemCount: recipe.steps.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(
-                                steps[index],
+                                recipe.steps[index],
                                 style: TextStyle(fontSize: 20),
                               ),
                             );

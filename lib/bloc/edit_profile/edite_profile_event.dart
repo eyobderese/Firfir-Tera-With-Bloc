@@ -2,10 +2,10 @@ import 'package:image_picker/image_picker.dart';
 
 abstract class EditProfileEvent {}
 
-class NameUpdated extends EditProfileEvent {
-  final String name;
+class FirstNameUpdated extends EditProfileEvent {
+  final String firstName;
 
-  NameUpdated(this.name);
+  FirstNameUpdated(this.firstName);
 }
 
 class EmailUpdated extends EditProfileEvent {
@@ -14,10 +14,10 @@ class EmailUpdated extends EditProfileEvent {
   EmailUpdated(this.email);
 }
 
-class BioUpdated extends EditProfileEvent {
-  final String bio;
+class LastNameUpdated extends EditProfileEvent {
+  final String lastName;
 
-  BioUpdated(this.bio);
+  LastNameUpdated(this.lastName);
 }
 
 class ImageUpdated extends EditProfileEvent {

@@ -57,12 +57,12 @@ class EditProfile extends StatelessWidget {
                 const SizedBox(height: 10),
                 const Text("Edit Profile Picture"),
                 const SizedBox(height: 30),
-                _NameField(),
+                _firstNameField(),
+                const SizedBox(height: 20),
+                _lastNameField(),
                 const SizedBox(height: 20.0),
                 _EmailField(),
                 const SizedBox(height: 20.0),
-                _BioField(),
-                const SizedBox(height: 20),
                 _SaveButton(),
               ],
             ),
@@ -109,19 +109,39 @@ class EditProfile extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Widget _NameField() {
+  Widget _firstNameField() {
     return BlocBuilder<EditProfileBloc, EditProfileState>(
         builder: (context, state) {
       return TextFormField(
         decoration: const InputDecoration(
             prefixIcon: Icon(Icons.person),
-            labelText: 'Name',
+            labelText: 'First Name',
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.horizontal(
                     left: Radius.circular(20), right: Radius.circular(20)))),
-        validator: (value) => state.isValidName ? null : 'Name is too short',
+        validator: (value) =>
+            state.isValidfirstName ? null : 'Name is too short',
         onChanged: (value) => context.read<EditProfileBloc>().add(
-              NameUpdated(value),
+              FirstNameUpdated(value),
+            ),
+      );
+    });
+  }
+
+  Widget _lastNameField() {
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+        builder: (context, state) {
+      return TextFormField(
+        decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.person),
+            labelText: 'last Name',
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(20), right: Radius.circular(20)))),
+        validator: (value) =>
+            state.isValidlastName ? null : 'Name is too short',
+        onChanged: (value) => context.read<EditProfileBloc>().add(
+              LastNameUpdated(value),
             ),
       );
     });
@@ -140,24 +160,6 @@ class EditProfile extends StatelessWidget {
         validator: (value) => state.isValidEmail ? null : 'Email is too short',
         onChanged: (value) => context.read<EditProfileBloc>().add(
               EmailUpdated(value),
-            ),
-      );
-    });
-  }
-
-  Widget _BioField() {
-    return BlocBuilder<EditProfileBloc, EditProfileState>(
-        builder: (context, state) {
-      return TextFormField(
-        decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.person),
-            labelText: 'Bio',
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(20), right: Radius.circular(20)))),
-        validator: (value) => state.isValidBio ? null : 'Bio is too short',
-        onChanged: (value) => context.read<EditProfileBloc>().add(
-              BioUpdated(value),
             ),
       );
     });

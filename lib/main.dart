@@ -6,6 +6,7 @@ import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/auth/auth_even.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
+import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
 import 'package:firfir_tera/presentation/screens/create_recipe_page.dart';
 import 'package:firfir_tera/presentation/screens/edit_profile.dart';
@@ -122,7 +123,7 @@ final GoRouter _route = GoRouter(
         name: "/detailed_recipe_view",
         builder: (context, state) {
           print(state.extra);
-          final recipe = state.extra;
+          final recipe = state.extra as Recipe;
           return DetailedView(
             recipe: recipe,
           );
@@ -140,9 +141,7 @@ final GoRouter _route = GoRouter(
       name: "/comment",
       builder: (context, state) {
         final recipeId = state.pathParameters['recipeId'];
-
-        final comments = fetchCommentsByRecipeId(recipeId!);
-        return CreateComment(comments: comments, recipeId: recipeId);
+        return CommentScreen(recipeId: recipeId!);
       },
     ),
     GoRoute(

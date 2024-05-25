@@ -48,6 +48,7 @@ class RecipeRepository {
 
 final List<Recipe> recipeList = [
   Recipe(
+    id: '1',
     name: 'Pancakes',
     description: 'Fluffy and delicious pancakes perfect for breakfast.',
     cookTime: 20,
@@ -64,6 +65,7 @@ final List<Recipe> recipeList = [
     cookId: 'cook1',
   ),
   Recipe(
+    id: '1',
     name: 'Spaghetti Carbonara',
     description: 'Classic Italian pasta dish with a creamy egg-based sauce.',
     cookTime: 30,
@@ -81,6 +83,7 @@ final List<Recipe> recipeList = [
     cookId: 'cook2',
   ),
   Recipe(
+    id: '1',
     name: 'Chicken Curry',
     description: 'Spicy and flavorful chicken curry perfect for dinner.',
     cookTime: 45,
@@ -106,6 +109,7 @@ final List<Recipe> recipeList = [
     cookId: 'cook3',
   ),
   Recipe(
+    id: '1',
     name: 'Chocolate Cake',
     description: 'Rich and moist chocolate cake perfect for dessert.',
     cookTime: 60,
@@ -130,6 +134,7 @@ final List<Recipe> recipeList = [
     cookId: 'cook4',
   ),
   Recipe(
+    id: '1',
     name: 'Fruit Salad',
     description: 'A refreshing mix of seasonal fruits.',
     cookTime: 10,

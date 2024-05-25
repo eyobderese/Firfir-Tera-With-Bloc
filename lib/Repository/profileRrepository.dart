@@ -1,13 +1,47 @@
+import 'package:firfir_tera/model/profile.dart';
+import 'package:firfir_tera/services/authService.dart';
+import 'package:firfir_tera/services/profileService.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileRepository {
-  Future<void> updateProfile({
-    required String name,
+  final ProfileService _profileService = ProfileService();
+
+  Future<String> updateProfile({
+    required String firstName,
+    required String lastName,
     required String email,
-    required String bio,
     required XFile? imageData,
   }) async {
-    // Simulate a network request
-    await Future.delayed(Duration(seconds: 1));
+    final String? token = await AuthService().getToken();
+    final String? userId = await AuthService().getUserId();
+
+    print(userId);
+    print(token);
+
+    try {
+      final response = await _profileService.updateProfile(
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        imageData: imageData,
+        token: token!,
+        userId: userId!,
+      );
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<ProfileModel> getProfile() async {
+    final String? token = await AuthService().getToken();
+    final String? userId = await AuthService().getUserId();
+
+    try {
+      final response = await _profileService.getProfile(userId!, token!);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

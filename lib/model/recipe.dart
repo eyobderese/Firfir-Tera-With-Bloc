@@ -13,6 +13,7 @@ class Recipe {
   final Category type;
   final String image;
   final String? cookId;
+  final String? id;
 
   Recipe({
     required this.name,
@@ -25,6 +26,7 @@ class Recipe {
     required this.type,
     required this.image,
     this.cookId,
+    required this.id,
   });
   // Getters
   String get getName => this.name;
@@ -37,6 +39,7 @@ class Recipe {
   Category get getType => this.type;
   String get getImage => this.image;
   String? get getCookId => this.cookId;
+  String? get getId => this.id;
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
@@ -50,6 +53,7 @@ class Recipe {
       type: Category.values.firstWhere((e) => describeEnum(e) == json['type']),
       image: json['image'],
       cookId: json['cook_id'],
+      id: json['id'],
     );
   }
 
@@ -70,6 +74,7 @@ class Recipe {
 
   factory Recipe.empty() {
     return Recipe(
+      id: '0',
       name: '',
       description: '',
       cookTime: 0,
@@ -95,6 +100,7 @@ class Recipe {
     String? cookId,
   }) {
     return Recipe(
+      id: '0',
       name: name ?? this.name,
       description: description ?? this.description,
       cookTime: cookTime ?? this.cookTime,

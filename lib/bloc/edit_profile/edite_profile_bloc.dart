@@ -11,9 +11,9 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
   EditProfileBloc({required this.profileRepository})
       : super(EditProfileState()) {
-    on<NameUpdated>((event, emit) {
+    on<FirstNameUpdated>((event, emit) {
       emit(state.copyWith(
-          name: event.name, formStatus: const InitialFormStatus()));
+          firstName: event.firstName, formStatus: const InitialFormStatus()));
     });
 
     on<EmailUpdated>((event, emit) {
@@ -21,9 +21,9 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           email: event.email, formStatus: const InitialFormStatus()));
     });
 
-    on<BioUpdated>((event, emit) {
+    on<LastNameUpdated>((event, emit) {
       emit(state.copyWith(
-          bio: event.bio, formStatus: const InitialFormStatus()));
+          lastName: event.lastName, formStatus: const InitialFormStatus()));
     });
 
     on<ImageUpdated>((event, emit) async {
@@ -42,11 +42,13 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       print(state.imageData!.path);
 
       try {
-        if (state.name != null && state.email != null && state.bio != null) {
+        if (state.firstName != null &&
+            state.email != null &&
+            state.lastName != null) {
           await profileRepository.updateProfile(
-            name: state.name!,
+            firstName: state.firstName!,
             email: state.email!,
-            bio: state.bio!,
+            lastName: state.lastName!,
             imageData: state.imageData,
           );
           emit(state.copyWith(formStatus: SubmissionSuccess()));

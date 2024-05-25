@@ -2,15 +2,15 @@ class Comment {
   final String userId;
   final String recipeId;
   final String text;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Comment({
     required this.userId,
     required this.recipeId,
     required this.text,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   // Convert a Comment instance into a Map for JSON serialization
@@ -18,8 +18,8 @@ class Comment {
         'userId': userId,
         'recipeId': recipeId,
         'text': text,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
+        'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String(),
       };
 
   // Create a Comment instance from a Map

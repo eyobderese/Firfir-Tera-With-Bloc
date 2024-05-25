@@ -1,9 +1,25 @@
-import 'package:firfir_tera/model/comment.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class CommentEvent {}
+abstract class CommentEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
-class AddCommentEvent extends CommentEvent {
-  final Comment comment;
+class LoadComments extends CommentEvent {
+  final String recipeId;
 
-  AddCommentEvent(this.comment);
+  LoadComments({required this.recipeId});
+
+  @override
+  List<Object> get props => [recipeId];
+}
+
+class AddComment extends CommentEvent {
+  final String content;
+  final String recipeId;
+
+  AddComment(this.content, this.recipeId);
+
+  @override
+  List<Object> get props => [content, recipeId];
 }

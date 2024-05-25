@@ -1,11 +1,44 @@
+import 'dart:ffi' as ffi;
+
+import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/auth/auth_even.dart';
+import 'package:firfir_tera/model/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  ProfileModel _profile = ProfileModel(
+      firstName: 'Aregawi',
+      lastName: 'Fikre',
+      email: 'eyobderese123@gmail.com',
+      image: 'assets/profile_pic/profile_.jpg');
+
+  void fetchProfile() async {
+    try {
+      final profile = await ProfileRepository().getProfile();
+
+      setState(() {
+        _profile = profile;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +50,20 @@ class Profile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 80,
-                backgroundImage: AssetImage('assets/profile_pic/profile_2.jpg'),
+                backgroundImage: NetworkImage(_profile.image),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Aregawi Fikre',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+              Text(
+                '${_profile.firstName} ${_profile.lastName}',
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'aregawifikre@gmail.com',
-                style: TextStyle(fontSize: 20, color: Colors.grey),
+              Text(
+                '${_profile.email}',
+                style: const TextStyle(fontSize: 20, color: Colors.grey),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
