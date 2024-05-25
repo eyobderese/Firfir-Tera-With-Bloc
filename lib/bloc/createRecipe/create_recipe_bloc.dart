@@ -14,7 +14,9 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
 
   CreateRecipeBloc({required this.recipeRepository})
       : super(CreateRecipeState(
-          controllers: List.generate(6, (_) => TextEditingController()),
+          ingredientControllers:
+              List.generate(3, (_) => TextEditingController()),
+          stepControllers: List.generate(3, (_) => TextEditingController()),
           recipeName: '',
           recipeServes: '',
           recipeCookingtime: '',
@@ -22,21 +24,38 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           recipeDescription: '',
           formSubmissionStatus: const InitialFormStatus(),
         )) {
-    on<AddLine>((event, emit) {
-      final controllers = List<TextEditingController>.from(state.controllers);
-      controllers.add(TextEditingController());
+    on<AddLineIngrident>((event, emit) {
+      final controllers =
+          List<TextEditingController>.from(state.ingredientControllers);
       controllers.add(TextEditingController());
       emit(state.copyWith(
-          controllers: controllers,
+          ingredientControllers: controllers,
           formSubmissionStatus: const InitialFormStatus()));
     });
 
-    on<RemoveLine>((event, emit) {
-      final controllers = List<TextEditingController>.from(state.controllers);
-      controllers.removeAt(event.index);
+    on<AddLineStep>((event, emit) {
+      final controllers =
+          List<TextEditingController>.from(state.stepControllers);
+      controllers.add(TextEditingController());
+      emit(state.copyWith(
+          stepControllers: controllers,
+          formSubmissionStatus: const InitialFormStatus()));
+    });
+
+    on<RemoveLineIngrident>((event, emit) {
+      final controllers =
+          List<TextEditingController>.from(state.ingredientControllers);
       controllers.removeAt(event.index);
       emit(state.copyWith(
-          controllers: controllers,
+          ingredientControllers: controllers,
+          formSubmissionStatus: const InitialFormStatus()));
+    });
+    on<RemoveLineStep>((event, emit) {
+      final controllers =
+          List<TextEditingController>.from(state.stepControllers);
+      controllers.removeAt(event.index);
+      emit(state.copyWith(
+          stepControllers: controllers,
           formSubmissionStatus: const InitialFormStatus()));
     });
 
@@ -81,18 +100,18 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
     on<SubmitRecipe>((event, emit) async {
       emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
 
-      List<Map<String, String>> ingredients = [];
-      final controllers = state.controllers;
+      List<String> ingredients = [];
+      final controllers = state.ingredientControllers;
 
-      for (var i = 0; i < controllers.length; i += 2) {
-        String ingredient = controllers[i].text;
-        String weight = controllers[i + 1].text;
-
-        ingredients.add({
-          'ingredient': ingredient,
-          'weight': weight,
-        });
+      for (var i = 0; i < controllers.length; i += 1) {
+        ingredients.add(controllers[i].text);
       }
+      List<String> steps = [];
+      final stepControllers = state.stepControllers;
+      for (var i = 0; i < stepControllers.length; i += 1) {
+        steps.add(stepControllers[i].text);
+      }
+
       print(state.formSubmissionStatus);
 
       try {
@@ -104,6 +123,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           description: state.recipeDescription,
           ingredients: ingredients,
           image: state.image,
+          steps: steps,
         );
         emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
       } catch (e) {
@@ -123,7 +143,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
 
   @override
   Future<void> close() {
-    for (var controller in state.controllers) {
+    for (var controller in state.ingredientControllers) {
       controller.dispose();
     }
     return super.close();

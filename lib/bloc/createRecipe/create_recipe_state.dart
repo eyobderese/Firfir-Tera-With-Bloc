@@ -4,7 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateRecipeState {
-  final List<TextEditingController> controllers;
+  final List<TextEditingController> ingredientControllers;
+  final List<TextEditingController> stepControllers;
   final XFile? image;
   final FormSubmissionStatus formSubmissionStatus;
   final String recipeName;
@@ -14,7 +15,8 @@ class CreateRecipeState {
   final String recipeCatagory;
 
   CreateRecipeState(
-      {required this.controllers,
+      {required this.ingredientControllers,
+      required this.stepControllers,
       required this.recipeName,
       required this.recipeServes,
       required this.recipeCookingtime,
@@ -24,7 +26,8 @@ class CreateRecipeState {
       required this.recipeCatagory});
 
   CreateRecipeState copyWith(
-      {List<TextEditingController>? controllers,
+      {List<TextEditingController>? ingredientControllers,
+      List<TextEditingController>? stepControllers,
       XFile? image,
       FormSubmissionStatus? formSubmissionStatus,
       String? recipeName,
@@ -33,7 +36,9 @@ class CreateRecipeState {
       String? recipeDescription,
       String? recipeCatagory}) {
     return CreateRecipeState(
-        controllers: controllers ?? this.controllers,
+        ingredientControllers:
+            ingredientControllers ?? this.ingredientControllers,
+        stepControllers: stepControllers ?? this.stepControllers,
         image: image ?? this.image,
         formSubmissionStatus: formSubmissionStatus ?? this.formSubmissionStatus,
         recipeName: recipeName ?? this.recipeName,

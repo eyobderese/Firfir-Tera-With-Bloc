@@ -22,6 +22,7 @@ class CreateRecipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController _scrollController = ScrollController();
+    final ScrollController _scrollController1 = ScrollController();
 
     return SafeArea(
       child: Scaffold(
@@ -32,6 +33,11 @@ class CreateRecipe extends StatelessWidget {
             listener: (context, state) => {
               if (state.formSubmissionStatus is SubmissionSuccess)
                 {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                            'Recipe Created Successfully, You can view it in the Discover Page')),
+                  ),
                   context.read<HomeBloc>().add(HomeEventIndexSelected(0)),
                 }
               else if (state.formSubmissionStatus is SubmissionFailed)
@@ -119,66 +125,127 @@ class CreateRecipe extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
-                  BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
-                    builder: (context, state) {
-                      return ListView.separated(
-                        controller: _scrollController,
-                        shrinkWrap: true,
-                        itemCount: state.controllers.length ~/ 2,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 8),
-                        itemBuilder: (context, index) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: buildTextField(
-                                    state.controllers[index * 2],
-                                    'Ingredient ${index + 1}'),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                flex: 2,
-                                child: buildTextField(
-                                    state.controllers[index * 2 + 1], 'weight'),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.remove_circle),
-                                onPressed: () => context
-                                    .read<CreateRecipeBloc>()
-                                    .add(RemoveLine(index * 2)),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<CreateRecipeBloc>().add(AddLine());
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Colors.black,
-                          size: 30,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          "Add Ingredient",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _ingridentFeilds(_scrollController),
+                  _addLineIngrident(context),
+                  const SizedBox(height: 20),
+                  const Text("Steps",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
+                  _stepFeilds(_scrollController1),
+                  _addLineStep(context),
                   _SaveButton(),
                 ],
               );
             }),
           ),
         ),
+      ),
+    );
+  }
+
+  BlocBuilder<CreateRecipeBloc, CreateRecipeState> _ingridentFeilds(
+      ScrollController _scrollController) {
+    return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
+      builder: (context, state) {
+        return ListView.separated(
+          controller: _scrollController,
+          shrinkWrap: true,
+          itemCount: state.ingredientControllers.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: buildTextField(state.ingredientControllers[index],
+                      'Ingredient ${index + 1}'),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.remove_circle),
+                  onPressed: () => context
+                      .read<CreateRecipeBloc>()
+                      .add(RemoveLineIngrident(index)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  GestureDetector _addLineIngrident(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.read<CreateRecipeBloc>().add(AddLineIngrident());
+      },
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            color: Colors.black,
+            size: 30,
+          ),
+          SizedBox(width: 8),
+          Text(
+            "Add Ingredient",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  BlocBuilder<CreateRecipeBloc, CreateRecipeState> _stepFeilds(
+      ScrollController _scrollController) {
+    return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
+      builder: (context, state) {
+        return ListView.separated(
+          controller: _scrollController,
+          shrinkWrap: true,
+          itemCount: state.stepControllers.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 8),
+          itemBuilder: (context, index) {
+            return Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: buildTextField(
+                      state.stepControllers[index], 'Step ${index + 1}'),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.remove_circle),
+                  onPressed: () => context
+                      .read<CreateRecipeBloc>()
+                      .add(RemoveLineStep(index)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  GestureDetector _addLineStep(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        context.read<CreateRecipeBloc>().add(AddLineStep());
+      },
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            color: Colors.black,
+            size: 30,
+          ),
+          SizedBox(width: 8),
+          Text(
+            "Add Step",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }

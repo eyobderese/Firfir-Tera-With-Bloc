@@ -22,7 +22,8 @@ class RecipeService {
     required String cookingTime,
     required String description,
     required String category,
-    required List<Map<String, String>> ingredients,
+    required List<String> ingredients,
+    required List<String> steps,
     XFile? image,
     required String cookId,
     required String token,
@@ -45,11 +46,7 @@ class RecipeService {
         cookId; //TODO change the hardcoded with userId from AuthService
     // Add ingredients as JSON string
     request.fields['ingredients'] = jsonEncode(ingredients);
-    request.fields['steps'] = jsonEncode([
-      'Mix the dry ingredients.',
-      'Add the wet ingredients and mix until smooth.',
-      'Cook on a hot griddle until golden brown.'
-    ]);
+    request.fields['steps'] = jsonEncode(steps);
 
     File imageFile = File(image!.path);
 

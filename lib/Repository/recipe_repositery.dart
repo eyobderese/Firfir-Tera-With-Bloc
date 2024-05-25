@@ -20,7 +20,8 @@ class RecipeRepository {
     required String cookingTime,
     required String description,
     required String category,
-    required List<Map<String, String>> ingredients,
+    required List<String> ingredients,
+    required List<String> steps,
     XFile? image,
   }) async {
     final token = await _authService.getToken();
@@ -35,6 +36,7 @@ class RecipeRepository {
         description: description,
         category: category,
         ingredients: ingredients,
+        steps: steps,
         image: image,
         cookId: cookId!,
         token: token!,

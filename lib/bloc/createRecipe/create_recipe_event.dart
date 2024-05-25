@@ -8,12 +8,23 @@ abstract class CreateRecipeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AddLine extends CreateRecipeEvent {}
+class AddLineIngrident extends CreateRecipeEvent {}
 
-class RemoveLine extends CreateRecipeEvent {
+class AddLineStep extends CreateRecipeEvent {}
+
+class RemoveLineIngrident extends CreateRecipeEvent {
   final int index;
 
-  const RemoveLine(this.index);
+  const RemoveLineIngrident(this.index);
+
+  @override
+  List<Object> get props => [index];
+}
+
+class RemoveLineStep extends CreateRecipeEvent {
+  final int index;
+
+  const RemoveLineStep(this.index);
 
   @override
   List<Object> get props => [index];
