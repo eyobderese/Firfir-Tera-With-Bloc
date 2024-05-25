@@ -60,19 +60,21 @@ class DetailedView extends StatelessWidget {
                           height: 260,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(recipe
-                                      .image), //TODO here change the hard code image fiele to recipe.image
+                                  image: recipe.image.startsWith('http')
+                                      ? NetworkImage(recipe.image)
+                                      : AssetImage(recipe.image)
+                                          as ImageProvider,
                                   fit: BoxFit.cover // recipe image
                                   ),
                               borderRadius: BorderRadius.circular(30)),
                         ),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Column(
                               children: [
                                 Icon(Icons.timer),
-                                Text("45 mins" //cookTime
+                                Text('${recipe.cookTime} min' //cookTime
                                     )
                               ],
                             ),
@@ -86,8 +88,7 @@ class DetailedView extends StatelessWidget {
                             Column(
                               children: [
                                 Icon(Icons.food_bank),
-                                Text("Fasting" //categroy
-                                    )
+                                Text(recipe.fasting),
                               ],
                             )
                           ],

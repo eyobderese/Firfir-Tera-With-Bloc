@@ -57,6 +57,15 @@ class RecipeServesChanged extends CreateRecipeEvent {
   List<Object> get props => [serves];
 }
 
+class RecipeFastChanged extends CreateRecipeEvent {
+  final String fasting;
+
+  const RecipeFastChanged({required this.fasting});
+
+  @override
+  List<Object> get props => [fasting];
+}
+
 class RecipeCookingTimeChanged extends CreateRecipeEvent {
   final String cookingTime;
 

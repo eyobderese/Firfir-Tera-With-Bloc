@@ -20,6 +20,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           recipeName: '',
           recipeServes: '',
           recipeCookingtime: '',
+          fasting: "Fasting",
           recipeCatagory: 'Breakfast',
           recipeDescription: '',
           formSubmissionStatus: const InitialFormStatus(),
@@ -91,6 +92,14 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           formSubmissionStatus: const InitialFormStatus()));
     });
 
+    on<RecipeFastChanged>(
+      (event, emit) {
+        emit(state.copyWith(
+            fasting: event.fasting,
+            formSubmissionStatus: const InitialFormStatus()));
+      },
+    );
+
     on<RecipeCookingTimeChanged>((event, emit) {
       emit(state.copyWith(
           recipeCookingtime: event.cookingTime,
@@ -120,6 +129,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           serves: state.recipeServes,
           cookingTime: state.recipeCookingtime,
           category: state.recipeCatagory,
+          fasting: state.fasting,
           description: state.recipeDescription,
           ingredients: ingredients,
           image: state.image,

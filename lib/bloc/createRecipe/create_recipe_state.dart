@@ -10,6 +10,7 @@ class CreateRecipeState {
   final FormSubmissionStatus formSubmissionStatus;
   final String recipeName;
   final String recipeServes;
+  final String fasting;
   final String recipeCookingtime;
   final String recipeDescription;
   final String recipeCatagory;
@@ -19,6 +20,7 @@ class CreateRecipeState {
       required this.stepControllers,
       required this.recipeName,
       required this.recipeServes,
+      required this.fasting,
       required this.recipeCookingtime,
       this.image,
       required this.formSubmissionStatus,
@@ -32,6 +34,7 @@ class CreateRecipeState {
       FormSubmissionStatus? formSubmissionStatus,
       String? recipeName,
       String? recipeServes,
+      String? fasting,
       String? recipeCookingtime,
       String? recipeDescription,
       String? recipeCatagory}) {
@@ -42,6 +45,7 @@ class CreateRecipeState {
         image: image ?? this.image,
         formSubmissionStatus: formSubmissionStatus ?? this.formSubmissionStatus,
         recipeName: recipeName ?? this.recipeName,
+        fasting: fasting ?? this.fasting,
         recipeServes: recipeServes ?? this.recipeServes,
         recipeCookingtime: recipeCookingtime ?? this.recipeCookingtime,
         recipeDescription: recipeDescription ?? this.recipeDescription,

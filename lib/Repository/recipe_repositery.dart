@@ -20,6 +20,7 @@ class RecipeRepository {
     required String cookingTime,
     required String description,
     required String category,
+    required String fasting,
     required List<String> ingredients,
     required List<String> steps,
     XFile? image,
@@ -35,6 +36,7 @@ class RecipeRepository {
         cookingTime: cookingTime,
         description: description,
         category: category,
+        fasting: fasting,
         ingredients: ingredients,
         steps: steps,
         image: image,
@@ -61,7 +63,7 @@ final List<Recipe> recipeList = [
       'Add the wet ingredients and mix until smooth.',
       'Cook on a hot griddle until golden brown.'
     ],
-    fasting: false,
+    fasting: "Non-Fasting",
     type: Category.breakfast,
     image: 'assets/images/beyaynet_fisik.jpg',
     cookId: 'cook1',
@@ -79,7 +81,7 @@ final List<Recipe> recipeList = [
       'Mix the eggs and cheese together.',
       'Combine everything with the cooked spaghetti.'
     ],
-    fasting: false,
+    fasting: "Non-Fasting",
     type: Category.lunch,
     image: 'assets/images/kikil.jpg',
     cookId: 'cook2',
@@ -105,7 +107,7 @@ final List<Recipe> recipeList = [
       'Add tomatoes and cook until soft.',
       'Add coconut milk and simmer until chicken is cooked.'
     ],
-    fasting: false,
+    fasting: "Non-Fasting",
     type: Category.dinner,
     image: 'assets/images/sambusa.jpg',
     cookId: 'cook3',
@@ -130,7 +132,7 @@ final List<Recipe> recipeList = [
       'Add the wet ingredients and mix until smooth.',
       'Pour into a baking pan and bake until done.'
     ],
-    fasting: false,
+    fasting: "Non-Fasting",
     type: Category.dessert,
     image: 'assets/images/shiro.webp',
     cookId: 'cook4',
@@ -147,7 +149,7 @@ final List<Recipe> recipeList = [
       'Mix them together in a large bowl.',
       'Serve immediately or chilled.'
     ],
-    fasting: true,
+    fasting: "Fasting",
     type: Category.snack,
     image: 'assets/images/Tegabino.png',
     cookId: 'cook5',

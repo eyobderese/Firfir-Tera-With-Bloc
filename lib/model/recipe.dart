@@ -9,7 +9,7 @@ class Recipe {
   final int people;
   final List<String> ingredients;
   final List<String> steps;
-  final bool fasting;
+  final String fasting;
   final Category type;
   final String image;
   final String? cookId;
@@ -35,7 +35,7 @@ class Recipe {
   int get getPeople => this.people;
   List<String> get getIngredients => this.ingredients;
   List<String> get getSteps => this.steps;
-  bool get isFasting => this.fasting;
+  String get isFasting => this.fasting;
   Category get getType => this.type;
   String get getImage => this.image;
   String? get getCookId => this.cookId;
@@ -50,7 +50,7 @@ class Recipe {
       ingredients: List<String>.from(json['ingredients']),
       steps: List<String>.from(json['steps']),
       fasting: json['fasting'],
-      type: Category.values.firstWhere((e) => describeEnum(e) == json['type']),
+      type: Category.breakfast,
       image: json['image'],
       cookId: json['cook_id'],
       id: json['id'],
@@ -81,7 +81,7 @@ class Recipe {
       people: 0,
       ingredients: [],
       steps: [],
-      fasting: false,
+      fasting: "Non-Fasting",
       type: Category.breakfast,
       image: '',
     );
@@ -94,7 +94,7 @@ class Recipe {
     int? people,
     List<String>? ingredients,
     List<String>? steps,
-    bool? fasting,
+    String? fasting,
     Category? type,
     String? image,
     String? cookId,

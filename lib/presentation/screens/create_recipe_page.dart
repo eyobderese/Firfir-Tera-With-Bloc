@@ -8,6 +8,7 @@ import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_event.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_state.dart';
 import 'package:firfir_tera/presentation/screens/discover.dart';
+import 'package:firfir_tera/presentation/widgets/fasting_drop_down.dart';
 import 'package:firfir_tera/presentation/widgets/meal_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,6 +121,8 @@ class CreateRecipe extends StatelessWidget {
                   description(context),
                   const SizedBox(height: 20),
                   MealTypeDropdown(),
+                  const SizedBox(height: 20),
+                  FastingDropdown(),
                   const SizedBox(height: 20),
                   const Text("Ingredients",
                       style:

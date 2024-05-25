@@ -24,6 +24,7 @@ class RecipeService {
     required String category,
     required List<String> ingredients,
     required List<String> steps,
+    required String fasting,
     XFile? image,
     required String cookId,
     required String token,
@@ -41,7 +42,7 @@ class RecipeService {
     request.fields['cookTime'] = cookingTime;
     request.fields['description'] = description;
     request.fields['type'] = category;
-    request.fields['fasting'] = "false"; // Hardcoded for now
+    request.fields['fasting'] = fasting; // Hardcoded for now
     request.fields['cook_id'] =
         cookId; //TODO change the hardcoded with userId from AuthService
     // Add ingredients as JSON string
