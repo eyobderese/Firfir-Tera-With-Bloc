@@ -48,6 +48,53 @@ class RecipeRepository {
       throw Exception(e);
     }
   }
+
+  Future<String> updateRecipe({
+    required String name,
+    required String serves,
+    required String cookingTime,
+    required String description,
+    required String category,
+    required String fasting,
+    required List<String> ingredients,
+    required List<String> steps,
+    required String recipeId,
+    XFile? image,
+  }) async {
+    final token = await _authService.getToken();
+    final cookId = await _authService.getUserId();
+    print(cookId);
+
+    try {
+      final response = await _recipeService.updateRecipe(
+        name: name,
+        serves: serves,
+        cookingTime: cookingTime,
+        description: description,
+        category: category,
+        fasting: fasting,
+        ingredients: ingredients,
+        steps: steps,
+        image: image,
+        cookId: cookId!,
+        token: token!,
+        recipeId: recipeId,
+      );
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> deleteRecipe(String recipeId) async {
+    final token = await _authService.getToken();
+    try {
+      final response = await _recipeService.deleteRecipe(recipeId, token!);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }
 
 final List<Recipe> recipeList = [
@@ -64,8 +111,8 @@ final List<Recipe> recipeList = [
       'Cook on a hot griddle until golden brown.'
     ],
     fasting: "Non-Fasting",
-    type: Category.breakfast,
-    image: 'assets/images/beyaynet_fisik.jpg',
+    type: Category.Breakfast,
+    image: "http://10.0.2.2:3000/uploads/1716673118683.jpg",
     cookId: 'cook1',
   ),
   Recipe(
@@ -82,7 +129,7 @@ final List<Recipe> recipeList = [
       'Combine everything with the cooked spaghetti.'
     ],
     fasting: "Non-Fasting",
-    type: Category.lunch,
+    type: Category.Lunch,
     image: 'assets/images/kikil.jpg',
     cookId: 'cook2',
   ),
@@ -108,7 +155,7 @@ final List<Recipe> recipeList = [
       'Add coconut milk and simmer until chicken is cooked.'
     ],
     fasting: "Non-Fasting",
-    type: Category.dinner,
+    type: Category.Dinner,
     image: 'assets/images/sambusa.jpg',
     cookId: 'cook3',
   ),
@@ -133,7 +180,7 @@ final List<Recipe> recipeList = [
       'Pour into a baking pan and bake until done.'
     ],
     fasting: "Non-Fasting",
-    type: Category.dessert,
+    type: Category.Dinner,
     image: 'assets/images/shiro.webp',
     cookId: 'cook4',
   ),
@@ -150,7 +197,7 @@ final List<Recipe> recipeList = [
       'Serve immediately or chilled.'
     ],
     fasting: "Fasting",
-    type: Category.snack,
+    type: Category.Snack,
     image: 'assets/images/Tegabino.png',
     cookId: 'cook5',
   ),

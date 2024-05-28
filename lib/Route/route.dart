@@ -1,4 +1,5 @@
 import 'package:firfir_tera/presentation/screens/comment.dart';
+import 'package:firfir_tera/presentation/screens/edit_recipe_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/admin.dart';
@@ -18,7 +19,7 @@ import 'package:firfir_tera/presentation/screens/onboarding_2.dart';
 import 'package:firfir_tera/presentation/screens/onboarding_3.dart';
 
 final GoRouter route = GoRouter(
-  initialLocation: '/admin',
+  initialLocation: '/',
   routes: <RouteBase>[
     GoRoute(
       path: "/",
@@ -62,6 +63,16 @@ final GoRouter route = GoRouter(
           print(state.extra);
           final recipe = state.extra as Recipe;
           return DetailedView(
+            recipe: recipe,
+          );
+        }),
+    GoRoute(
+        path: "/edit_recipe_view",
+        name: "/edit_recipe_view",
+        builder: (context, state) {
+          print(state.extra);
+          final recipe = state.extra as Recipe;
+          return EditRecipe(
             recipe: recipe,
           );
         }),

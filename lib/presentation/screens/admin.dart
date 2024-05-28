@@ -38,6 +38,10 @@ class AdminPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Admin Panel"),
+        centerTitle: true,
+      ),
       body: BlocListener<AdminBloc, AdminState>(
         listener: (context, state) {
           if (state is AdminError) {
@@ -88,18 +92,6 @@ class AdminPanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(16, 20, 16, 40),
-          child: Text(
-            "Admin Panel",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepOrangeAccent,
-            ),
-          ),
-        ),
         Expanded(
           child: ListView.builder(
             itemCount: state,

@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
 class RecipeService {
+  final _baseUrl = "http://10.0.2.2:3000/recipes";
   Future<List<Recipe>> fetchRecipes(String query, String filter) async {
     // Implement the logic to fetch recipes based on query and filter
     // For demonstration, returning an empty list
@@ -29,7 +30,7 @@ class RecipeService {
     required String cookId,
     required String token,
   }) async {
-    var uri = Uri.parse('http://10.0.2.2:3000/recipes/new');
+    var uri = Uri.parse(_baseUrl + '/new');
     var request = http.MultipartRequest('POST', uri);
 
     // final userId = await AuthService().getUserId();
@@ -81,8 +82,7 @@ class RecipeService {
   Future<List<Recipe>> searchRecipes(String query, String filter) async {
     final token = await AuthService().getToken();
     final response = await http.get(
-      Uri.parse(
-          'http://10.0.2.2:3000/recipes/query?keyword=$query&category=$filter'),
+      Uri.parse('${_baseUrl}/query?keyword=$query&category=$filter'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -95,6 +95,94 @@ class RecipeService {
       return data.map((json) => Recipe.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch recipes');
+    }
+  }
+
+  Future<String> updateRecipe({
+    required String name,
+    required String serves,
+    required String cookingTime,
+    required String description,
+    required String category,
+    required List<String> ingredients,
+    required List<String> steps,
+    required String fasting,
+    XFile? image,
+    required String cookId,
+    required String token,
+    required String recipeId,
+  }) async {
+    var uri = Uri.parse(_baseUrl + '/$recipeId');
+    var request = http.MultipartRequest('PATCH', uri);
+
+    // final userId = await AuthService().getUserId();
+
+    // Add text fields
+    request.headers['Authorization'] =
+        'Bearer $token'; // adding token to your request
+    request.fields['name'] = name;
+    request.fields['people'] = serves;
+    request.fields['cookTime'] = cookingTime;
+    request.fields['description'] = description;
+    request.fields['type'] = category;
+    request.fields['fasting'] = fasting; // Hardcoded for now
+    request.fields['cook_id'] =
+        cookId; //TODO change the hardcoded with userId from AuthService
+    // Add ingredients as JSON string
+    request.fields['ingredients'] = jsonEncode(ingredients);
+    request.fields['steps'] = jsonEncode(steps);
+    print(name);
+    print(serves);
+    print(cookingTime);
+    print(description);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      String extension = path.extension(imageFile.path).toLowerCase();
+      if (extension != '.jpg' && extension != '.png') {
+        throw Exception('The image file must be a jpg or png file');
+      }
+      // Add image file
+
+      var stream = http.ByteStream(image.openRead());
+      var length = await image.length();
+      var multipartFile = http.MultipartFile('image', stream, length,
+          filename: path.basename(imageFile.path),
+          contentType: MediaType('image', extension.substring(1)));
+      request.files.add(multipartFile);
+    }
+
+    // Send the request
+    var response = await request.send();
+    print(response.statusCode);
+
+    if (response.statusCode == 201) {
+      return ('Recipe uploaded successfully');
+    } else {
+      throw Exception(
+          'Failed to upload recipe Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<String> deleteRecipe(String recipeId, String token) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(_baseUrl + '/$recipeId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return ('Recipe deleted successfully');
+      } else {
+        throw Exception('Failed to delete recipe');
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

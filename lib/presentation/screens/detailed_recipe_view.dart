@@ -1,3 +1,4 @@
+import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/comment.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 class DetailedView extends StatelessWidget {
   final Recipe recipe;
+  final RecipeRepository _recipeRepository = RecipeRepository();
   DetailedView({super.key, required this.recipe});
 
   @override
@@ -34,23 +36,81 @@ class DetailedView extends StatelessWidget {
                                     },
                                     icon: const Icon(Icons.arrow_back),
                                   ),
-                                  Text(recipe.name
-                                      //recipe name,
-                                      ),
+                                  Text(recipe.name, //recipe name
+                                      style: const TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold)),
                                 ],
                               ),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CommentScreen(recipeId: recipe.id!),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.comment))
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CommentScreen(recipeId: recipe.id!),
+                                      ),
+                                    );
+                                  },
+                                  icon: const Icon(Icons.comment),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    context.go('/edit_recipe_view',
+                                        extra: recipe);
+                                  },
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                    onPressed: () async {
+                                      final confirm = await showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Confirm'),
+                                          content: const Text(
+                                              'Are you sure you want to delete this recipe?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: Text('Yes'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: Text('No'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+
+                                      if (confirm) {
+                                        // Send the delete request
+                                        // Replace this with your actual delete request code
+                                        try {
+                                          await _recipeRepository
+                                              .deleteRecipe(recipe.id!);
+                                          context.goNamed("/home");
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: Text(
+                                                'Failed to delete recipe: $e'),
+                                          ));
+                                        }
+                                      }
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ))
+                              ],
+                            ),
                           ],
                         ),
                         const SizedBox(

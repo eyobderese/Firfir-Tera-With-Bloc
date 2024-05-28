@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firfir_tera/model/recipe.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class CreateRecipeEvent extends Equatable {
@@ -94,3 +95,21 @@ class RecipeCategoryChanged extends CreateRecipeEvent {
 }
 
 class SubmitRecipe extends CreateRecipeEvent {}
+
+class LoadRecipeForEditing extends CreateRecipeEvent {
+  final Recipe recipe;
+
+  const LoadRecipeForEditing({required this.recipe});
+
+  @override
+  List<Object> get props => [recipe];
+}
+
+class UpdateRecipe extends CreateRecipeEvent {
+  final String recipeId;
+
+  const UpdateRecipe({required this.recipeId});
+
+  @override
+  List<Object> get props => [recipeId];
+}

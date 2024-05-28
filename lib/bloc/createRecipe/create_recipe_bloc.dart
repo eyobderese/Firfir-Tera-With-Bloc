@@ -33,6 +33,28 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           ingredientControllers: controllers,
           formSubmissionStatus: const InitialFormStatus()));
     });
+    on<LoadRecipeForEditing>((event, emit) {
+      final recipe = event.recipe;
+      final ingredientControllers = recipe.ingredients
+          .map((ingredient) => TextEditingController(text: ingredient))
+          .toList();
+      final stepControllers = recipe.steps
+          .map((step) => TextEditingController(text: step))
+          .toList();
+      print(recipe.fasting);
+
+      emit(state.copyWith(
+        recipeName: recipe.name,
+        recipeServes: recipe.people.toString(),
+        recipeCookingtime: recipe.cookTime.toString(),
+        fasting: recipe.fasting,
+        recipeCatagory: recipe.type.name,
+        recipeDescription: recipe.description,
+        ingredientControllers: ingredientControllers,
+        stepControllers: stepControllers,
+        formSubmissionStatus: const InitialFormStatus(),
+      ));
+    });
 
     on<AddLineStep>((event, emit) {
       final controllers =
@@ -134,6 +156,51 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           ingredients: ingredients,
           image: state.image,
           steps: steps,
+        );
+        emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
+      } catch (e) {
+        if (e is Exception) {
+          emit(state.copyWith(formSubmissionStatus: SubmissionFailed(e)));
+        } else {
+          emit(state.copyWith(
+              formSubmissionStatus:
+                  SubmissionFailed(Exception('An error occurred'))));
+        }
+      }
+      if (state.formSubmissionStatus is SubmissionSuccess) {
+        print("am her------");
+      }
+    });
+
+    on<UpdateRecipe>((event, emit) async {
+      emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
+
+      List<String> ingredients = [];
+      final controllers = state.ingredientControllers;
+
+      for (var i = 0; i < controllers.length; i += 1) {
+        ingredients.add(controllers[i].text);
+      }
+      List<String> steps = [];
+      final stepControllers = state.stepControllers;
+      for (var i = 0; i < stepControllers.length; i += 1) {
+        steps.add(stepControllers[i].text);
+      }
+
+      print(state.formSubmissionStatus);
+
+      try {
+        await recipeRepository.updateRecipe(
+          name: state.recipeName,
+          serves: state.recipeServes,
+          cookingTime: state.recipeCookingtime,
+          category: state.recipeCatagory,
+          fasting: state.fasting,
+          description: state.recipeDescription,
+          ingredients: ingredients,
+          image: state.image,
+          steps: steps,
+          recipeId: event.recipeId,
         );
         emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
       } catch (e) {

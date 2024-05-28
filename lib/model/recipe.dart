@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-enum Category { breakfast, lunch, dinner, snack, dessert, other }
+enum Category { Breakfast, Lunch, Dinner, Snack }
 
 class Recipe {
   final String name;
@@ -50,7 +50,7 @@ class Recipe {
       ingredients: List<String>.from(json['ingredients']),
       steps: List<String>.from(json['steps']),
       fasting: json['fasting'],
-      type: Category.breakfast,
+      type: Category.Breakfast,
       image: json['image'],
       cookId: json['cook_id'],
       id: json['id'],
@@ -82,7 +82,7 @@ class Recipe {
       ingredients: [],
       steps: [],
       fasting: "Non-Fasting",
-      type: Category.breakfast,
+      type: Category.Breakfast,
       image: '',
     );
   }
