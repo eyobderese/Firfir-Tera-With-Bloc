@@ -156,7 +156,6 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
-        obscureText: true,
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.person),
           labelText: "Last Name",

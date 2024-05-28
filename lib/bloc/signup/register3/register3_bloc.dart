@@ -19,6 +19,8 @@ class Register3Bloc extends Bloc<Register3Event, Register3State> {
       if (pickedFile != null) {
         emit(
             state.copyWith(image: pickedFile, formStatus: InitialFormStatus()));
+      } else {
+        emit(state.copyWith(formStatus: const NoImageSelected()));
       }
       print(pickedFile?.path);
     });

@@ -14,3 +14,7 @@ class SubmissionFailed extends FormSubmissionStatus {
   final Exception exception;
   SubmissionFailed(this.exception);
 }
+
+class NoImageSelected extends FormSubmissionStatus {
+  const NoImageSelected();
+}
