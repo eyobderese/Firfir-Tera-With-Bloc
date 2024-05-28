@@ -54,7 +54,7 @@ class _Register_3State extends State<_Register_3> {
           _showSnackBar(context, formStatus.exception.toString());
         } else if (formStatus is SubmissionSuccess) {
           _showSnackBar(context, 'Success');
-          context.goNamed("/login");
+          context.goNamed("/home");
         }
       },
       child: Scaffold(
@@ -153,9 +153,29 @@ class _Register_3State extends State<_Register_3> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<Register3Bloc>()
-                            .add(Registration3SubmittedEvent());
+                        if (context.read<Register3Bloc>().state.image == null) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    'No image selected. Please select an image'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          context
+                              .read<Register3Bloc>()
+                              .add(Registration3SubmittedEvent());
+                        }
                       },
                       style: ButtonStyle(
                         backgroundColor:

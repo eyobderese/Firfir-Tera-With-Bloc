@@ -50,7 +50,13 @@ class Register3Bloc extends Bloc<Register3Event, Register3State> {
 
         emit(state.copyWith(formStatus: SubmissionSuccess()));
       } catch (e) {
-        emit(state.copyWith(formStatus: SubmissionFailed(e as Exception)));
+        // emit(state.copyWith(formStatus: SubmissionFailed(e as Exception)));
+        if (e is Exception) {
+          emit(state.copyWith(formStatus: SubmissionFailed(e)));
+        } else if (e is Error) {
+          emit(state.copyWith(
+              formStatus: SubmissionFailed(Exception(e.toString()))));
+        }
       }
     });
   }

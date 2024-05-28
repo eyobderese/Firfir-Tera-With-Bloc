@@ -135,6 +135,8 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        validator: (value) =>
+            state.isValidfirstName ? null : 'Invalid First Name',
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.person),
           labelText: "First Name",
@@ -156,6 +158,8 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        validator: (value) =>
+            state.isValidlastName ? null : 'Invalid Last Name',
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.person),
           labelText: "Last Name",
@@ -177,6 +181,7 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        validator: (value) => state.isValiddBio ? null : 'Invalid Bio',
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.chat),
           labelText: "Bio",
