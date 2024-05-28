@@ -1,5 +1,3 @@
-import 'dart:ffi' as ffi;
-
 import 'package:firfir_tera/Repository/profileRrepository.dart';
 import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/auth/auth_even.dart';
@@ -20,7 +18,7 @@ class _ProfileState extends State<Profile> {
       firstName: 'Aregawi',
       lastName: 'Fikre',
       email: 'eyobderese123@gmail.com',
-      image: 'assets/profile_pic/profile_.jpg');
+      image: 'http://10.0.2.2:3000/uploads/1716673118683.jpg');
 
   void fetchProfile() async {
     try {

@@ -1,3 +1,5 @@
+import 'package:firfir_tera/bloc/admin/userDto.dart';
+import 'package:firfir_tera/services/profileService.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../model/user.dart';
@@ -50,5 +52,60 @@ class UserRepository {
     _user = _user?.copyWith(
       profileImage: ProfileImage(image: image),
     );
+  }
+
+  Future<List<UserDto>> getUserDtoAll() async {
+    final ProfileService profileService = ProfileService();
+
+    try {
+      final response = await profileService.getAllUsers();
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> promoteUser(String userId) async {
+    final ProfileService profileService = ProfileService();
+
+    try {
+      final response = await profileService.changeRole(userId, 'cook');
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> demoteUser(String userId) async {
+    final ProfileService profileService = ProfileService();
+
+    try {
+      final response = await profileService.changeRole(userId, 'normal');
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> addAdmin(String userId) async {
+    final ProfileService profileService = ProfileService();
+
+    try {
+      final response = await profileService.changeRole(userId, 'admin');
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<String> deleteUser(String userId) async {
+    final ProfileService profileService = ProfileService();
+
+    try {
+      final response = await profileService.deleteUser(userId);
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }

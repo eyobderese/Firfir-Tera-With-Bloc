@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_event.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_state.dart';
-import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

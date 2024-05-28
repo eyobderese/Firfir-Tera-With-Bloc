@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/model/recipe.dart';
-import 'package:firfir_tera/presentation/screens/discover.dart';
 
 class DiscoverState extends Equatable {
   final String filtter;

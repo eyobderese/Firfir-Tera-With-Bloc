@@ -7,7 +7,6 @@ import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_event.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_state.dart';
-import 'package:firfir_tera/presentation/screens/discover.dart';
 import 'package:firfir_tera/presentation/widgets/fasting_drop_down.dart';
 import 'package:firfir_tera/presentation/widgets/meal_drop_down.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:firfir_tera/presentation/screens/profile.dart';
 import 'package:image_picker/image_picker.dart';
 
 class User extends Equatable {

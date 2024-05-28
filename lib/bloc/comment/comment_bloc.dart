@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/model/comment.dart';
 
 import 'comment_event.dart';
