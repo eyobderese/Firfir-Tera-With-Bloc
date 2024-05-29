@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firfir_tera/Repository/authRepository.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_event.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_state.dart';
+import 'package:firfir_tera/Repository/userRepositery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -31,11 +33,28 @@ class _Register_3State extends State<_Register_3> {
     return BlocListener<Register3Bloc, Register3State>(
       listener: (context, state) {
         final formStatus = state.formStatus;
-        if (formStatus is SubmissionFailed) {
+        if (state.formStatus is NoImageSelected) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('No image selected. Please select an image'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else if (formStatus is SubmissionFailed) {
           _showSnackBar(context, formStatus.exception.toString());
         } else if (formStatus is SubmissionSuccess) {
           _showSnackBar(context, 'Success');
-          context.goNamed("/login");
+          context.goNamed("/home");
         }
       },
       child: Scaffold(
@@ -113,7 +132,7 @@ class _Register_3State extends State<_Register_3> {
                           } else {
                             return const Center(
                               child: Text(
-                                "Upload",
+                                "Select Image",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: 20,
@@ -134,9 +153,29 @@ class _Register_3State extends State<_Register_3> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        context
-                            .read<Register3Bloc>()
-                            .add(Registration3SubmittedEvent());
+                        if (context.read<Register3Bloc>().state.image == null) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    'No image selected. Please select an image'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          context
+                              .read<Register3Bloc>()
+                              .add(Registration3SubmittedEvent());
+                        }
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -208,6 +247,3 @@ class _Register_3State extends State<_Register_3> {
     );
   }
 }
-
-
-// use
