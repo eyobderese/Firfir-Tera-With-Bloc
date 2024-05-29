@@ -2,6 +2,7 @@ import 'package:firfir_tera/Repository/recipe_repositery.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class DetailedView extends StatelessWidget {
@@ -28,19 +29,24 @@ class DetailedView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      context.goNamed("/home");
-                                    },
-                                    icon: const Icon(Icons.arrow_back),
-                                  ),
-                                  Text(recipe.name, //recipe name
-                                      style: const TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold)),
-                                ],
+                              child: Expanded(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        context.goNamed("/home");
+                                      },
+                                      icon: const Icon(Icons.arrow_back),
+                                    ),
+                                    Expanded(
+                                      child: Text(recipe.name, //recipe name
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             Row(
@@ -49,10 +55,12 @@ class DetailedView extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CommentScreen(recipeId: recipe.id!),
-                                      ),
+                                      MaterialPageRoute(builder: (context) {
+                                        print(recipe.id);
+
+                                        return CommentScreen(
+                                            recipeId: recipe.id!);
+                                      }),
                                     );
                                   },
                                   icon: const Icon(Icons.comment),

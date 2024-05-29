@@ -7,6 +7,7 @@ import 'package:firfir_tera/bloc/admin/admin_bloc.dart';
 import 'package:firfir_tera/bloc/admin/admin_event.dart';
 import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/auth/auth_even.dart';
+import 'package:firfir_tera/bloc/comment/comment_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/signup/register3/register3_bloc.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,10 @@ class MyApp extends StatelessWidget {
               userRepo: context.read<UserRepository>(),
               authRepo: context.read<AuthRepository>(),
             ),
+          ),
+          BlocProvider(
+            lazy: false,
+            create: (context) => CommentBloc(),
           ),
         ],
         child: MaterialApp.router(

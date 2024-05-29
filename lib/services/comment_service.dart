@@ -4,17 +4,19 @@ import 'package:firfir_tera/services/authService.dart';
 import 'package:http/http.dart' as http;
 
 class CommentService {
+  final String baseUrl = 'http://10.0.2.2:3000/comments';
   Future<void> createComment(String text, String recipeId) async {
+    print("text $text");
     final authService = AuthService();
     final userId = await authService.getUserId();
     final response = await http.post(
-      Uri.parse('https://your-api-url/comments'),
+      Uri.parse(baseUrl + '/' + recipeId),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'userId': userId!,
-        'text': text,
+        'comment': text,
       }),
     );
 
@@ -29,20 +31,69 @@ class CommentService {
     }
   }
 
-  Future<List<Comment>> getComments(String postId) async {
-    final response = await http.get(
-      Uri.parse('https://your-api-url/comments?postId=$postId'),
+  Future<List<CommentIncoming>> getComments(String postId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(baseUrl + '/' + postId),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      print("hi");
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((json) => CommentIncoming.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch comments');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch comments out');
+    }
+  }
+
+  Future<void> deleteComment(String commentId) async {
+    final response = await http.delete(
+      Uri.parse(baseUrl + '/' + commentId),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     );
 
     if (response.statusCode == 200) {
       // If the server returns a 200 OK response,
-      // then parse the JSON response.
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => Comment.fromJson(json)).toList();
+      // then the comment was successfully deleted.
+      print('Comment deleted successfully.');
     } else {
       // If the server returns a response with a status code other than 200,
-      // then the request failed.
-      throw Exception('Failed to load comments.');
+      // then the deletion failed.
+      throw Exception('Failed to delete comment.');
+    }
+  }
+
+  Future<void> updateComment(String commentId, String text) async {
+    print(text);
+    final response = await http.patch(
+      Uri.parse(baseUrl + '/' + commentId),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'comment': text,
+      }),
+    );
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response,
+      // then the comment was successfully updated.
+      print('Comment updated successfully.');
+    } else {
+      // If the server returns a response with a status code other than 200,
+      // then the update failed.
+      throw Exception('Failed to update comment.');
     }
   }
 }

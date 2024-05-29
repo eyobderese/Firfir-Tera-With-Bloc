@@ -11,7 +11,7 @@ class CommentInitial extends CommentState {}
 class CommentLoading extends CommentState {}
 
 class CommentLoaded extends CommentState {
-  final List<Comment> comments;
+  final List<CommentIncoming> comments;
 
   CommentLoaded(this.comments);
 
