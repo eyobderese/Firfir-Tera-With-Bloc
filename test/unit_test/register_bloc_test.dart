@@ -13,7 +13,7 @@ import 'package:mockito/mockito.dart';
 import 'package:firfir_tera/Repository/userRepositery.dart';
 
 @GenerateMocks([UserRepository])
-import 'register_bloc_test.mocks.dart';
+import 'mocks/register_bloc_test.mocks.dart';
 void main() {
   group('Register1Bloc', () {
     late Register1Bloc register1Bloc;

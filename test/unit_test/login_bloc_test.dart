@@ -11,7 +11,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateMocks([AuthRepository, AuthBloc])
-import 'login_bloc_test.mocks.dart';
+import 'mocks/login_bloc_test.mocks.dart';
 
 void main() {
   group('LoginBloc', () { 
