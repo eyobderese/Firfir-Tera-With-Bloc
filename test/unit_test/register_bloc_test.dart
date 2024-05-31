@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
 import 'package:firfir_tera/application/bloc/signup/register1/register1_bloc.dart';
-import 'package:firfir_tera/application/bloc/signup/register1/register1_event.dart';
-import 'package:firfir_tera/application/bloc/signup/register1/register1_state.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register1_event.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register1_state.dart';
 import 'package:firfir_tera/application/bloc/signup/register2/register2_bloc.dart';
 import 'package:firfir_tera/presentation/pages/signUp/bloc/register2_event.dart';
 import 'package:firfir_tera/presentation/pages/signUp/bloc/register2_state.dart';

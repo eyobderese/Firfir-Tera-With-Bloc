@@ -1,6 +1,6 @@
 import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
-import 'package:firfir_tera/application/bloc/signup/register1/register1_event.dart';
-import 'package:firfir_tera/application/bloc/signup/register1/register1_state.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register1_event.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register1_state.dart';
 import 'package:firfir_tera/Domain/Repository%20Interface/userRepositery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
