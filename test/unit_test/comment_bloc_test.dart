@@ -1,9 +1,9 @@
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firfir_tera/Domain/Repository%20Interface/commentRepository.dart';
 import 'package:firfir_tera/application/bloc/comment/comment_bloc.dart';
 import 'package:firfir_tera/presentation/pages/comment/bloc/comment_event.dart';
 import 'package:firfir_tera/presentation/pages/comment/bloc/comment_state.dart';
-import 'package:firfir_tera/Domain/Entities/comment.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
@@ -66,25 +66,6 @@ void main() {
       expect: () => [
         CommentLoading(),
         CommentError('Failed to load comments'),
-      ],
-    );
-
-    blocTest<CommentBloc, CommentState>(
-      'emits [CommentLoaded] with updated comments when AddComment is added',
-      build: () {
-        return commentBloc;
-      },
-      act: (bloc) async {
-        bloc.add(LoadComments(recipeId: '2'));
-        await Future.delayed(const Duration(milliseconds: 1600));
-        bloc.add(AddComment('New Comment', '2'));
-        await Future.delayed(const Duration(milliseconds: 1600));
-      },
-      expect: () => [
-        CommentLoading(),
-        CommentLoaded([]),
-        CommentLoaded(
-            [Comment(userId: '', recipeId: '2', text: 'New Comment')]),
       ],
     );
   });

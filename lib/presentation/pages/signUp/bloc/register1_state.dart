@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
 import 'package:firfir_tera/Domain/Entities/user.dart';
 
-class Register1State {
+class Register1State extends Equatable {
   final String email;
   bool get isValidemail => email.length > 3;
 
@@ -31,4 +32,7 @@ class Register1State {
       formStatus: formStatus ?? this.formStatus,
     );
   }
+
+  @override
+  List<Object?> get props => [email, password, accountType, formStatus];
 }

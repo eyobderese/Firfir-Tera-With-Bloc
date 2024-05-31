@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Register3State {
+class Register3State extends Equatable {
   final XFile? image;
   final FormSubmissionStatus formStatus;
   final bool isImagePosted;
@@ -21,6 +22,9 @@ class Register3State {
       isImagePosted: image != null,
     );
   }
+
+  @override
+  List<Object?> get props => [image, formStatus, isImagePosted];
 }
 
 class Register3Initial extends Register3State {}
