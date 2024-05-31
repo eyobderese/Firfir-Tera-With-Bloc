@@ -1,19 +1,20 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firfir_tera/bloc/form_submistion_status.dart';
-import 'package:firfir_tera/bloc/signup/register1/register1_bloc.dart';
-import 'package:firfir_tera/bloc/signup/register1/register1_event.dart';
-import 'package:firfir_tera/bloc/signup/register1/register1_state.dart';
-import 'package:firfir_tera/bloc/signup/register2/register2_bloc.dart';
-import 'package:firfir_tera/bloc/signup/register2/register2_event.dart';
-import 'package:firfir_tera/bloc/signup/register2/register2_state.dart';
-import 'package:firfir_tera/model/user.dart';
+import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
+import 'package:firfir_tera/application/bloc/signup/register1/register1_bloc.dart';
+import 'package:firfir_tera/application/bloc/signup/register1/register1_event.dart';
+import 'package:firfir_tera/application/bloc/signup/register1/register1_state.dart';
+import 'package:firfir_tera/application/bloc/signup/register2/register2_bloc.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register2_event.dart';
+import 'package:firfir_tera/presentation/pages/signUp/bloc/register2_state.dart';
+import 'package:firfir_tera/Domain/Entities/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:firfir_tera/Repository/userRepositery.dart';
+import 'package:firfir_tera/Domain/Repository%20Interface/userRepositery.dart';
 
 @GenerateMocks([UserRepository])
 import 'mocks/register_bloc_test.mocks.dart';
+
 void main() {
   group('Register1Bloc', () {
     late Register1Bloc register1Bloc;
@@ -63,7 +64,7 @@ void main() {
             accountType: UserType.cook, formStatus: const InitialFormStatus())
       ],
     );
-    
+
     blocTest<Register1Bloc, Register1State>(
       'emits Register1State with registration submitted event',
       build: () {
@@ -129,7 +130,8 @@ void main() {
       build: () => register2Bloc,
       act: (bloc) => bloc.add(RegisterFirstNameChanged(firstName: 'abebe')),
       expect: () => [
-        Register2State(firstName: 'abebe', formStatus: const InitialFormStatus())
+        Register2State(
+            firstName: 'abebe', formStatus: const InitialFormStatus())
       ],
     );
 
@@ -138,7 +140,8 @@ void main() {
       build: () => register2Bloc,
       act: (bloc) => bloc.add(RegisterLastNameChanged(lastName: 'kebede')),
       expect: () => [
-        Register2State(lastName: 'kebede', formStatus: const InitialFormStatus())
+        Register2State(
+            lastName: 'kebede', formStatus: const InitialFormStatus())
       ],
     );
 

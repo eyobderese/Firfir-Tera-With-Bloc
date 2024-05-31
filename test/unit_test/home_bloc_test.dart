@@ -1,6 +1,6 @@
-import 'package:firfir_tera/bloc/Home/home_bloc.dart';
-import 'package:firfir_tera/bloc/Home/home_event.dart';
-import 'package:firfir_tera/bloc/Home/home_state.dart';
+import 'package:firfir_tera/application/bloc/Home/home_bloc.dart';
+import 'package:firfir_tera/presentation/pages/home/bloc/home_event.dart';
+import 'package:firfir_tera/presentation/pages/home/bloc/home_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
 

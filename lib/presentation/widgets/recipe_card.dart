@@ -1,4 +1,4 @@
-import 'package:firfir_tera/model/recipe.dart';
+import 'package:firfir_tera/Domain/Entities/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

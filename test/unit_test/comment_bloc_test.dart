@@ -1,13 +1,13 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:firfir_tera/Repository/commentRepository.dart';
-import 'package:firfir_tera/bloc/comment/comment_bloc.dart';
-import 'package:firfir_tera/bloc/comment/comment_event.dart';
-import 'package:firfir_tera/bloc/comment/comment_state.dart';
-import 'package:firfir_tera/model/comment.dart';
+import 'package:firfir_tera/Domain/Repository%20Interface/commentRepository.dart';
+import 'package:firfir_tera/application/bloc/comment/comment_bloc.dart';
+import 'package:firfir_tera/presentation/pages/comment/bloc/comment_event.dart';
+import 'package:firfir_tera/presentation/pages/comment/bloc/comment_state.dart';
+import 'package:firfir_tera/Domain/Entities/comment.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:firfir_tera/services/comment_service.dart';
+import 'package:firfir_tera/infrastructure/services/comment_service.dart';
 
 @GenerateMocks([CommentService, CommentRepository])
 import 'mocks/comment_bloc_test.mocks.dart';
@@ -34,7 +34,7 @@ void main() {
       'emits [CommentLoading, CommentLoaded] when LoadComments is added',
       build: () {
         when(mockCommentRepository.getComments('2'))
-            .thenAnswer((_) async => []); 
+            .thenAnswer((_) async => []);
         return commentBloc;
       },
       act: (bloc) async {
@@ -47,7 +47,7 @@ void main() {
       ],
     );
 
-   blocTest<CommentBloc, CommentState>(
+    blocTest<CommentBloc, CommentState>(
       'emits [CommentLoading, CommentError] when LoadComments fails',
       build: () {
         when(mockCommentRepository.getComments('1'))
@@ -74,7 +74,7 @@ void main() {
       build: () {
         return commentBloc;
       },
-      act: (bloc) async{
+      act: (bloc) async {
         bloc.add(LoadComments(recipeId: '2'));
         await Future.delayed(const Duration(milliseconds: 1600));
         bloc.add(AddComment('New Comment', '2'));
@@ -89,5 +89,3 @@ void main() {
     );
   });
 }
-
-

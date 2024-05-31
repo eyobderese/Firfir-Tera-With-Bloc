@@ -5,9 +5,11 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:firfir_tera/model/comment.dart' as _i4;
-import 'package:firfir_tera/Repository/commentRepository.dart' as _i5;
-import 'package:firfir_tera/services/comment_service.dart' as _i2;
+import 'package:firfir_tera/Domain/Entities/comment.dart' as _i4;
+import 'package:firfir_tera/Domain/Repository%20Interface/commentRepository.dart'
+    as _i5;
+import 'package:firfir_tera/infrastructure/services/comment_service.dart'
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint

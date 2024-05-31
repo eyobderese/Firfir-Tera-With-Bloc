@@ -5,10 +5,11 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:firfir_tera/bloc/auth/auth_bloc.dart' as _i6;
-import 'package:firfir_tera/bloc/auth/auth_even.dart' as _i7;
-import 'package:firfir_tera/bloc/auth/auth_state.dart' as _i2;
-import 'package:firfir_tera/Repository/authRepository.dart' as _i3;
+import 'package:firfir_tera/application/bloc/auth/auth_bloc.dart' as _i6;
+import 'package:firfir_tera/application/bloc/auth/auth_even.dart' as _i7;
+import 'package:firfir_tera/application/bloc/auth/auth_state.dart' as _i2;
+import 'package:firfir_tera/Domain/Repository%20Interface/authRepository.dart'
+    as _i3;
 import 'package:flutter_bloc/flutter_bloc.dart' as _i8;
 import 'package:image_picker/image_picker.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
