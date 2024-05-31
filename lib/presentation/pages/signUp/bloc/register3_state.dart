@@ -17,7 +17,7 @@ class Register3State extends Equatable {
     XFile? image,
   }) {
     return Register3State(
-      image: image ?? this.image,
+      image: image,
       formStatus: formStatus ?? this.formStatus,
       isImagePosted: image != null,
     );

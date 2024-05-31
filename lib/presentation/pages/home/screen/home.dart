@@ -93,11 +93,13 @@ class _Home extends StatelessWidget {
             },
             items: [
               const BottomNavigationBarItem(
+                key: Key('discover_button'),
                 icon: Icon(Icons.home),
                 label: 'Discover',
               ),
               if (role == 'cook')
                 const BottomNavigationBarItem(
+                  key: Key('add_recipe_button'),
                   icon: Icon(Icons.add_box_rounded),
                   label: 'Add Recipe',
                 ),
@@ -107,7 +109,7 @@ class _Home extends StatelessWidget {
                   label: 'Admin Panal',
                 ),
               const BottomNavigationBarItem(
-                key: const Key('profilePageButton'),
+                key: Key('profile_button'),
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),

@@ -30,6 +30,7 @@ class CreateRecipeState {
       {List<TextEditingController>? ingredientControllers,
       List<TextEditingController>? stepControllers,
       XFile? image,
+      bool imageIsNull = false,
       FormSubmissionStatus? formSubmissionStatus,
       String? recipeName,
       String? recipeServes,
@@ -41,7 +42,7 @@ class CreateRecipeState {
         ingredientControllers:
             ingredientControllers ?? this.ingredientControllers,
         stepControllers: stepControllers ?? this.stepControllers,
-        image: image ?? this.image,
+        image: imageIsNull ? null : image ?? this.image, // Modify this
         formSubmissionStatus: formSubmissionStatus ?? this.formSubmissionStatus,
         recipeName: recipeName ?? this.recipeName,
         fasting: fasting ?? this.fasting,

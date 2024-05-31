@@ -106,7 +106,7 @@ class RecipeRepository {
 final List<Recipe> recipeList = [
   Recipe(
     id: '1',
-    name: 'Pancakes',
+    name: '---------',
     description: 'Fluffy and delicious pancakes perfect for breakfast.',
     cookTime: 20,
     people: 4,
@@ -118,12 +118,12 @@ final List<Recipe> recipeList = [
     ],
     fasting: "Non-Fasting",
     type: Category.Breakfast,
-    image: "http://10.0.2.2:3000/uploads/1716673118683.jpg",
+    image: "assets/images/placeholder.png",
     cookId: 'cook1',
   ),
   Recipe(
     id: '1',
-    name: 'Spaghetti Carbonara',
+    name: '-----------',
     description: 'Classic Italian pasta dish with a creamy egg-based sauce.',
     cookTime: 30,
     people: 2,
@@ -136,7 +136,7 @@ final List<Recipe> recipeList = [
     ],
     fasting: "Non-Fasting",
     type: Category.Lunch,
-    image: 'assets/images/kikil.jpg',
+    image: 'assets/images/placeholder.png',
     cookId: 'cook2',
   ),
   Recipe(
@@ -162,7 +162,7 @@ final List<Recipe> recipeList = [
     ],
     fasting: "Non-Fasting",
     type: Category.Dinner,
-    image: 'assets/images/sambusa.jpg',
+    image: 'assets/images/placeholder.png',
     cookId: 'cook3',
   ),
   Recipe(
@@ -187,12 +187,12 @@ final List<Recipe> recipeList = [
     ],
     fasting: "Non-Fasting",
     type: Category.Dinner,
-    image: 'assets/images/shiro.webp',
+    image: 'assets/images/placeholder.png',
     cookId: 'cook4',
   ),
   Recipe(
     id: '1',
-    name: 'Fruit Salad',
+    name: '---- -----',
     description: 'A refreshing mix of seasonal fruits.',
     cookTime: 10,
     people: 4,
@@ -204,7 +204,7 @@ final List<Recipe> recipeList = [
     ],
     fasting: "Fasting",
     type: Category.Snack,
-    image: 'assets/images/Tegabino.png',
+    image: 'assets/images/placeholder.png',
     cookId: 'cook5',
   ),
 ];

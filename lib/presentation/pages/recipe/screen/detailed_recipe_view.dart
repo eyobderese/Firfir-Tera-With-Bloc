@@ -32,6 +32,7 @@ class _DetailedViewState extends State<DetailedView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+        key: const Key('detailed_recipe_page'),
         future: futureRecipe,
         builder: ((context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,6 +41,7 @@ class _DetailedViewState extends State<DetailedView> {
             return Scaffold(
                 appBar: AppBar(
                   leading: IconButton(
+                    key: const Key('detailed_recipe_back_button'),
                     onPressed: () {
                       context.goNamed("/home");
                     },
@@ -96,6 +98,7 @@ class _DetailedViewState extends State<DetailedView> {
                                     Row(
                                       children: [
                                         IconButton(
+                                          key: const Key('comment_button'),
                                           onPressed: () {
                                             Navigator.push(
                                               context,
@@ -209,8 +212,8 @@ class _DetailedViewState extends State<DetailedView> {
                                     ),
                                     Column(
                                       children: [
-                                        Icon(Icons.star),
-                                        Text("8.5 rate" //rating
+                                        Icon(Icons.person_3),
+                                        Text("${recipe.people}" //rating
                                             )
                                       ],
                                     ),

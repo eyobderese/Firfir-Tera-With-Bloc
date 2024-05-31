@@ -1,4 +1,3 @@
-// login_bloc_test.dart
 import 'package:bloc_test/bloc_test.dart';
 import 'package:firfir_tera/application/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/application/bloc/auth/auth_even.dart';

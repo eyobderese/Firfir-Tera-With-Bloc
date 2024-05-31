@@ -82,6 +82,10 @@ final GoRouter route = GoRouter(
         name: "/admin",
         builder: (context, state) => AdminPanel()),
     GoRoute(
+        path: "/userDetail",
+        name: "/userDetail",
+        builder: (context, state) => AdminPanel()),
+    GoRoute(
         path: "/create_recipe",
         name: "/create_recipe",
         builder: (context, state) => CreateRecipe()),

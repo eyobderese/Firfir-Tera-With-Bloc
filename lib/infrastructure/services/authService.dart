@@ -72,7 +72,7 @@ class AuthService {
     return role;
   }
 
-  Future<void> signUp(String firstName, String lastName, String email,
+  Future<String?> signUp(String firstName, String lastName, String email,
       String password, String role, String bio, XFile image) async {
     var uri = Uri.parse('$_baseUrl/signup');
     var request = http.MultipartRequest('POST', uri);
@@ -93,10 +93,20 @@ class AuthService {
     var multipartFile = http.MultipartFile('image', stream, length,
         filename: imageFile.path, contentType: MediaType('image', extension));
     request.files.add(multipartFile);
-    var response = await request.send();
+    var response = await http.Response.fromStream(await request.send());
     print(response.statusCode);
     if (response.statusCode == 201) {
       print('User signed up successfully.');
+      final data = jsonDecode(response.body);
+      final token = data['token'];
+      final userId = data["id"];
+      final role = data["role"][0];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      await prefs.setString('userId', userId);
+      await prefs.setString('role', role);
+
+      return token;
     } else {
       throw Exception(response.statusCode);
     }

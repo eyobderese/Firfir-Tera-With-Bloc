@@ -47,6 +47,7 @@ class _OnBoarding_3State extends State<OnBoarding_3> {
                         height: 20,
                       ),
                       ElevatedButton(
+                        key: const Key('onboarding3_next_button'),
                         onPressed: () {
                           context.goNamed("/login");
                         },

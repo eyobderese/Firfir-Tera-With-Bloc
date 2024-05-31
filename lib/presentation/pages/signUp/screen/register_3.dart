@@ -31,6 +31,7 @@ class _Register_3State extends State<_Register_3> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<Register3Bloc, Register3State>(
+      key: Key('register_3_page'),
       listener: (context, state) {
         final formStatus = state.formStatus;
         if (state.formStatus is NoImageSelected) {
@@ -53,8 +54,10 @@ class _Register_3State extends State<_Register_3> {
         } else if (formStatus is SubmissionFailed) {
           _showSnackBar(context, formStatus.exception.toString());
         } else if (formStatus is SubmissionSuccess) {
-          _showSnackBar(context, 'Success');
-          context.goNamed("/login");
+          _showSnackBar(context, 'You are Registerd Successfully');
+
+          Future.delayed(Duration(seconds: 1));
+          context.goNamed("/home");
         }
       },
       child: Scaffold(
@@ -74,6 +77,7 @@ class _Register_3State extends State<_Register_3> {
                 Row(
                   children: [
                     IconButton(
+                      key: Key('register3_back_button'),
                       onPressed: () {
                         context.goNamed("/register_2");
                       },
@@ -108,6 +112,7 @@ class _Register_3State extends State<_Register_3> {
                   height: 70,
                 ),
                 GestureDetector(
+                  key: const Key('register3_image_button'),
                   onTap: () => showModalBottomSheet(
                     context: context,
                     builder: (context) => bottomSheet(context),
@@ -152,6 +157,7 @@ class _Register_3State extends State<_Register_3> {
                       height: 30.0,
                     ),
                     ElevatedButton(
+                      key: Key('register3_finish_button'),
                       onPressed: () {
                         if (context.read<Register3Bloc>().state.image == null) {
                           showDialog(

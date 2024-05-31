@@ -30,6 +30,7 @@ class Login1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('login_page'),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Center(
@@ -65,6 +66,7 @@ class Login1 extends StatelessWidget {
                       children: [
                         const Text('Don\'t have Account? '),
                         GestureDetector(
+                          key: const Key('register_button'),
                           onTap: () {
                             context.goNamed("/register_1");
                           },
@@ -124,6 +126,7 @@ class Login1 extends StatelessWidget {
   Widget _usernameField() {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return TextFormField(
+        key: const Key('username_field'),
         decoration: const InputDecoration(
             prefixIcon: Icon(Icons.email),
             labelText: 'email',
@@ -142,6 +145,7 @@ class Login1 extends StatelessWidget {
   Widget _passwordField() {
     return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
       return TextFormField(
+        key: Key('password_field'),
         obscureText: true,
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.lock),
@@ -165,6 +169,7 @@ class Login1 extends StatelessWidget {
       return state.formStatus is FormSubmitting
           ? const CircularProgressIndicator()
           : ElevatedButton(
+              key: Key('login_button'),
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? true) {
                   context.read<LoginBloc>().add(LoginSubmitted());

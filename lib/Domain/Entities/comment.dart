@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class Comment extends Equatable {
+class Comment {
   final String userId;
   final String recipeId;
   final String text;
@@ -34,9 +32,6 @@ class Comment extends Equatable {
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
-
-  @override
-  List<Object?> get props => [userId, recipeId, text, createdAt, updatedAt];
 }
 
 class UserInComment {

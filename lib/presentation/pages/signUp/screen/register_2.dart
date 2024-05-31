@@ -15,6 +15,7 @@ class Register_2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('register2_page'),
       extendBody: true,
       body: Container(
         decoration: const BoxDecoration(
@@ -33,6 +34,7 @@ class Register_2 extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
+                        key: const Key('register2_back_button'),
                         onPressed: () {
                           context.goNamed("/register_1");
                         },
@@ -135,6 +137,7 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        key: Key('register2_firstName_field'),
         validator: (value) =>
             state.isValidfirstName ? null : 'Invalid First Name',
         decoration: const InputDecoration(
@@ -158,6 +161,7 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        key: Key('register2_lastName_field'),
         validator: (value) =>
             state.isValidlastName ? null : 'Invalid Last Name',
         decoration: const InputDecoration(
@@ -181,6 +185,7 @@ class Register_2 extends StatelessWidget {
     return BlocBuilder<Register2Bloc, Register2State>(
         builder: (context, state) {
       return TextFormField(
+        key: Key('register2_bio_field'),
         validator: (value) => state.isValiddBio ? null : 'Invalid Bio',
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.chat),
@@ -200,6 +205,7 @@ class Register_2 extends StatelessWidget {
 
   Widget _registerButton() {
     return BlocBuilder<Register2Bloc, Register2State>(
+        key: Key('register2_next_button'),
         builder: (context, state) {
       return state.formStatus is FormSubmitting
           ? const CircularProgressIndicator()

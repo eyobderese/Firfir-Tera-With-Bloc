@@ -10,6 +10,7 @@ class MealTypeDropdown extends StatelessWidget {
     return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
       builder: (context, state) {
         return DropdownButton<String>(
+          key: const Key('meal_type_dropdown'),
           value: state.recipeCatagory,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,

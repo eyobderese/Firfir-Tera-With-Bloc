@@ -13,14 +13,15 @@ class Discover extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      key: const Key('discover_page'),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: BlocProvider(
             lazy: false,
-            create: (context) => DiscoverBloc(
-              recipeRepository: context.read<RecipeRepository>(),
-            ),
+            create: (context) =>
+                DiscoverBloc(recipeRepository: context.read<RecipeRepository>())
+                  ..add(FilterChanged(filter: "All")),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,22 +54,27 @@ class Discover extends StatelessWidget {
                         _showSnackBar(context, state.message);
                       } else if (state is DiscoverLoading) {
                         _showSnackBar(context, "Recipes Loading...");
+                      } else if (state.getRecipes.isEmpty) {
+                        _showSnackBar(context, "No Recipes Found");
                       }
                     },
                     child: BlocBuilder<DiscoverBloc, DiscoverState>(
                       builder: (context, state) => state is DiscoverLoaded ||
                               state is DiscoverInitial
-                          ? ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: state.getRecipes.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  child: RecipeCard(
-                                    recipe: state.getRecipes[index],
-                                  ),
-                                );
-                              },
-                            )
+                          ? state.getRecipes.isNotEmpty
+                              ? ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: state.getRecipes.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      key: const Key('recipe_card'),
+                                      child: RecipeCard(
+                                        recipe: state.getRecipes[index],
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const Center(child: Text("No Recipes Found"))
                           : const Center(child: CircularProgressIndicator()),
                     ),
                   ),

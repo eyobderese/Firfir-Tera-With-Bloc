@@ -54,7 +54,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
       final users = await userRepository.getUserDtoAll();
       emit(AdminLoaded(users));
     } catch (e) {
-      emit(AdminError('Failed to demote user'));
+      emit(AdminError(e.toString()));
     }
   }
 

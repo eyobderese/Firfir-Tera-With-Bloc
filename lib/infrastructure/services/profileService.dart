@@ -104,7 +104,7 @@ class ProfileService {
     print("user is promoted/demoted with id $userId");
 
     final String? token = await AuthService().getToken();
-    const String _baseUrl = 'http://http://10.0.2.2:3000/user/changeRole';
+    const String _baseUrl = 'http://10.0.2.2:3000/user';
     final response = await http.patch(
       Uri.parse('$_baseUrl'),
       headers: {

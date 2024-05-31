@@ -153,7 +153,15 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
           image: state.image,
           steps: steps,
         );
-        emit(state.copyWith(formSubmissionStatus: SubmissionSuccess()));
+
+        for (var controller in controllers) {
+          controller.clear();
+        }
+        for (var controller in stepControllers) {
+          controller.clear();
+        }
+        emit(state.copyWith(
+            formSubmissionStatus: SubmissionSuccess(), imageIsNull: true));
       } catch (e) {
         if (e is Exception) {
           emit(state.copyWith(formSubmissionStatus: SubmissionFailed(e)));
@@ -162,9 +170,6 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
               formSubmissionStatus:
                   SubmissionFailed(Exception('An error occurred'))));
         }
-      }
-      if (state.formSubmissionStatus is SubmissionSuccess) {
-        print("am her------");
       }
     });
 

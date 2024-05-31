@@ -14,8 +14,10 @@ class CommentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String? userId = context.read<AuthBloc>().state.userId;
     return Scaffold(
+      key: const Key('comment_page'),
       appBar: AppBar(
         leading: IconButton(
+          key: const Key('comment_back_button'),
           icon: Icon(Icons.arrow_back_sharp),
           onPressed: () {
             Navigator.pop(context, true);
@@ -110,8 +112,8 @@ class CommentView extends StatelessWidget {
                           if (comment.user.id == userId)
                             IconButton(
                               icon: Icon(Icons.delete),
-                              onPressed: () {
-                                showDialog(
+                              onPressed: () async {
+                                final isdeleted = await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
@@ -122,7 +124,7 @@ class CommentView extends StatelessWidget {
                                         TextButton(
                                           child: Text('Cancel'),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop(false);
                                           },
                                         ),
                                         TextButton(
@@ -131,13 +133,19 @@ class CommentView extends StatelessWidget {
                                             context.read<CommentBloc>().add(
                                                 DeleteComment(
                                                     comment.id, recipeId));
-                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop(true);
                                           },
                                         ),
                                       ],
                                     );
                                   },
                                 );
+
+                                if (isdeleted == true) {
+                                  context
+                                      .read<CommentBloc>()
+                                      .add(LoadComments(recipeId: recipeId));
+                                }
                               },
                             ),
                         ]));
@@ -156,11 +164,13 @@ class CommentView extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  key: const Key('comment_textfield'),
                   controller: _controller,
                   decoration: InputDecoration(hintText: 'Enter your comment'),
                 ),
               ),
               IconButton(
+                key: const Key('send_comment'),
                 icon: Icon(Icons.send),
                 onPressed: () {
                   if (_controller.text.isNotEmpty) {

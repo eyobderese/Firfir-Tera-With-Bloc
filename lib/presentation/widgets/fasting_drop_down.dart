@@ -10,6 +10,7 @@ class FastingDropdown extends StatelessWidget {
     return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
       builder: (context, state) {
         return DropdownButton<String>(
+          key: const Key('fasting_dropdown'),
           value: state.fasting,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,

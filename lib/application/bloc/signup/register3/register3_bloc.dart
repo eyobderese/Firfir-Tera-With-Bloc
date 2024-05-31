@@ -1,4 +1,6 @@
 import 'package:firfir_tera/Domain/Repository%20Interface/authRepository.dart';
+import 'package:firfir_tera/application/bloc/auth/auth_bloc.dart';
+import 'package:firfir_tera/application/bloc/auth/auth_even.dart';
 import 'package:firfir_tera/application/bloc/formStutes/form_submistion_status.dart';
 import 'package:firfir_tera/presentation/pages/signUp/bloc/register3_event.dart';
 import 'package:firfir_tera/presentation/pages/signUp/bloc/register3_state.dart';
@@ -10,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 class Register3Bloc extends Bloc<Register3Event, Register3State> {
   final UserRepository userRepo;
   final AuthRepository authRepo;
+  final AuthBloc authBloc = AuthBloc();
   final _picker = ImagePicker();
 
   Register3Bloc({required this.userRepo, required this.authRepo})
@@ -45,10 +48,20 @@ class Register3Bloc extends Bloc<Register3Event, Register3State> {
 
         final XFile image = userRepo.getUser().profileImage.image;
 
-        await authRepo.signup(
+        final String? token = await authRepo.signup(
             firstName, lastName, email, password, role, bio, image);
 
-        emit(state.copyWith(formStatus: SubmissionSuccess()));
+        final String? userId = await authRepo.getUserId();
+
+        if (token != null) {
+          emit(state.copyWith(formStatus: SubmissionSuccess()));
+          authBloc.add(LoggedIn(token, userId!, role!));
+        } else {
+          emit(state.copyWith(
+              formStatus: SubmissionFailed(Exception('Failed to login'))));
+        }
+
+        emit(state.copyWith(image: null, formStatus: SubmissionSuccess()));
       } catch (e) {
         // emit(state.copyWith(formStatus: SubmissionFailed(e as Exception)));
         if (e is Exception) {

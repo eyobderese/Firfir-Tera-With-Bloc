@@ -1,4 +1,5 @@
 import 'package:firfir_tera/application/bloc/admin/admin_bloc.dart';
+import 'package:firfir_tera/presentation/pages/admin/bloc/admin_event.dart';
 import 'package:firfir_tera/presentation/pages/admin/bloc/admin_state.dart';
 import 'package:firfir_tera/application/bloc/admin/userDto.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,12 @@ import 'package:firfir_tera/infrastructure/services/UserDto.dart';
 import 'package:firfir_tera/presentation/pages/admin/screen/user_detail_for_admin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AdminPanel extends StatelessWidget {
+class AdminPanel extends StatefulWidget {
+  @override
+  State<AdminPanel> createState() => _AdminPanelState();
+}
+
+class _AdminPanelState extends State<AdminPanel> {
   final List<UserDto> users = [
     UserDto(
       id: "1",
@@ -36,7 +42,14 @@ class AdminPanel extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    context.read<AdminBloc>().add(LoadUsers());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    context.read<AdminBloc>().add(LoadUsers());
     return Scaffold(
       appBar: AppBar(
         title: Text("Admin Panel"),

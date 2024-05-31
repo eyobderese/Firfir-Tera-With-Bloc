@@ -14,10 +14,10 @@ class AuthRepository {
     }
   }
 
-  Future<void> signup(String firstName, String lastName, String email,
+  Future<String?> signup(String firstName, String lastName, String email,
       String password, String role, String bio, XFile image) async {
     try {
-      await _authService.signUp(
+      return await _authService.signUp(
           firstName, lastName, email, password, role, bio, image);
     } catch (e) {
       throw Exception(e);

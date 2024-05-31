@@ -299,6 +299,7 @@ class _EditRecipeState extends State<EditRecipe> {
           .read<CreateRecipeBloc>()
           .add(RecipeCookingTimeChanged(cookingTime: value)),
       textAlign: TextAlign.end,
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(20),
         prefixIcon: const Icon(Icons.access_time, color: Colors.orange),
@@ -319,6 +320,7 @@ class _EditRecipeState extends State<EditRecipe> {
   TextField serveField(BuildContext context, TextEditingController controller) {
     return TextField(
       controller: controller,
+      keyboardType: TextInputType.number,
       onChanged: (value) => context
           .read<CreateRecipeBloc>()
           .add(RecipeServesChanged(serves: value)),

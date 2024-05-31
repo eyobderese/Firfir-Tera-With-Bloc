@@ -18,6 +18,7 @@ class Register_1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('register1_page'),
       extendBody: true,
       body: Container(
         decoration: const BoxDecoration(
@@ -66,6 +67,7 @@ class Register_1 extends StatelessWidget {
                             children: [
                               const Text('Already have an account?'),
                               TextButton(
+                                key: const Key('register_login_button'),
                                 onPressed: () {
                                   context.goNamed("/login");
                                 },
@@ -134,6 +136,7 @@ class Register_1 extends StatelessWidget {
     return BlocBuilder<Register1Bloc, Register1State>(
         builder: (context, state) {
       return TextFormField(
+        key: Key('register_email_field'),
         validator: (value) => state.isValidemail ? null : 'invalid email',
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.email),
@@ -156,6 +159,7 @@ class Register_1 extends StatelessWidget {
     return BlocBuilder<Register1Bloc, Register1State>(
         builder: (context, state) {
       return TextFormField(
+        key: Key('register_password_field'),
         obscureText: true,
         validator: (value) =>
             state.isValidPassword ? null : 'password is too short',
@@ -180,12 +184,14 @@ class Register_1 extends StatelessWidget {
     return BlocBuilder<Register1Bloc, Register1State>(
         builder: (context, state) {
       return DropdownButtonFormField<UserType>(
+        key: Key('user_type_dropdown'),
         value: state.accountType,
         onChanged: (value) => context
             .read<Register1Bloc>()
             .add(RegisterAccountTypeChanged(accountType: value)),
         items: UserType.values.map((UserType type) {
           return DropdownMenuItem<UserType>(
+            
             value: type,
             child: Text(
               type == UserType.normal ? 'I am a Customer' : 'I am a Cook',
@@ -210,6 +216,7 @@ class Register_1 extends StatelessWidget {
 
   Widget _registerButton() {
     return BlocBuilder<Register1Bloc, Register1State>(
+      key: Key('register1_next_button'),
         builder: (context, state) {
       return state.formStatus is FormSubmitting
           ? const CircularProgressIndicator()

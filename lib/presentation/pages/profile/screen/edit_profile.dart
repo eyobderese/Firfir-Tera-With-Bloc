@@ -18,6 +18,12 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+        ),
         title: const Text("Edit Profile"),
         backgroundColor: Colors.orange,
       ),
@@ -37,12 +43,13 @@ class EditProfile extends StatelessWidget {
     return BlocListener<EditProfileBloc, EditProfileState>(
         listener: (context, state) {
           final formStatus = state.formStatus;
+
           if (formStatus is SubmissionFailed) {
             _showSnackBar(context, formStatus.exception.toString());
           } else if (formStatus is SubmissionSuccess) {
             _showSnackBar(context, 'Success');
             debugPrint('Context: $context1');
-            context.goNamed("/home");
+            Navigator.pop(context, true);
           }
         },
         child: Form(
@@ -171,7 +178,7 @@ class EditProfile extends StatelessWidget {
       return state.formStatus is FormSubmitting
           ? const CircularProgressIndicator()
           : ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 context.read<EditProfileBloc>().add(ProfileSubmitted());
               },
               style: ButtonStyle(

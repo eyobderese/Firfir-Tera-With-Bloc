@@ -18,8 +18,13 @@ class UserDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Details"),
-      ),
+          title: Text("User Details"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
       body: Container(
         child: Padding(
           padding: EdgeInsets.all(20.0),
@@ -29,6 +34,10 @@ class UserDetails extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(state.message)),
                 );
+              } else if (state is AdminLoaded) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("The role Changed successfully")));
+                Navigator.pop(context);
               }
             },
             child: Column(
@@ -51,7 +60,13 @@ class UserDetails extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   'Email: ${user.email}',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Role: ${user.role}',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40),

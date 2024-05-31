@@ -1,4 +1,3 @@
-// create_recipe_screen.dart
 
 import 'dart:io';
 import 'package:firfir_tera/application/bloc/Home/home_bloc.dart';
@@ -25,6 +24,7 @@ class CreateRecipe extends StatelessWidget {
     final ScrollController _scrollController1 = ScrollController();
 
     return SafeArea(
+      key: const Key('create_recipe_page'),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -97,6 +97,7 @@ class CreateRecipe extends StatelessWidget {
                             top: 10,
                             right: 20,
                             child: IconButton(
+                              key: const Key('select_image_button'),
                               icon:
                                   const Icon(Icons.edit, color: Colors.orange),
                               onPressed: () {
@@ -151,6 +152,7 @@ class CreateRecipe extends StatelessWidget {
     return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
       builder: (context, state) {
         return ListView.separated(
+          key: const Key('ingredient_list'),
           controller: _scrollController,
           shrinkWrap: true,
           itemCount: state.ingredientControllers.length,
@@ -159,6 +161,7 @@ class CreateRecipe extends StatelessWidget {
             return Row(
               children: [
                 Expanded(
+                  key: Key('ingredient_$index'),
                   flex: 3,
                   child: buildTextField(state.ingredientControllers[index],
                       'Ingredient ${index + 1}'),
@@ -204,6 +207,7 @@ class CreateRecipe extends StatelessWidget {
     return BlocBuilder<CreateRecipeBloc, CreateRecipeState>(
       builder: (context, state) {
         return ListView.separated(
+          key: const Key('step_list'),
           controller: _scrollController,
           shrinkWrap: true,
           itemCount: state.stepControllers.length,
@@ -254,10 +258,12 @@ class CreateRecipe extends StatelessWidget {
 
   TextField cockTimeField(BuildContext context) {
     return TextField(
+      key: const Key('cooking_time_field'),
       onChanged: (value) => context
           .read<CreateRecipeBloc>()
           .add(RecipeCookingTimeChanged(cookingTime: value)),
       textAlign: TextAlign.end,
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(20),
         prefixIcon: const Icon(Icons.access_time, color: Colors.orange),
@@ -277,10 +283,12 @@ class CreateRecipe extends StatelessWidget {
 
   TextField serveField(BuildContext context) {
     return TextField(
+      key: const Key('serve_field'),
       onChanged: (value) => context
           .read<CreateRecipeBloc>()
           .add(RecipeServesChanged(serves: value)),
       textAlign: TextAlign.end,
+      keyboardType: TextInputType.number,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(20),
         prefixIcon: const Icon(Icons.person, color: Colors.orange),
@@ -300,6 +308,7 @@ class CreateRecipe extends StatelessWidget {
 
   TextField recipeNameField(BuildContext context) {
     return TextField(
+      key: const Key('recipe_name_field'),
       textAlign: TextAlign.end,
       onChanged: (value) {
         context.read<CreateRecipeBloc>().add(RecipeNameChanged(name: value));
@@ -323,6 +332,7 @@ class CreateRecipe extends StatelessWidget {
 
   TextField description(BuildContext context) {
     return TextField(
+      key: const Key('description_field'),
       onChanged: (value) => context
           .read<CreateRecipeBloc>()
           .add(RecipeDescriptionChanged(recipeDescription: value)),
@@ -350,6 +360,7 @@ class CreateRecipe extends StatelessWidget {
       return state.formSubmissionStatus is FormSubmitting
           ? const LinearProgressIndicator()
           : ElevatedButton(
+              key: const Key('save_button'),
               onPressed: () {
                 context.read<CreateRecipeBloc>().add(SubmitRecipe());
                 // add an event that triger the for is summited
@@ -360,6 +371,7 @@ class CreateRecipe extends StatelessWidget {
 
   Widget buildTextField(TextEditingController controller, String hintText) {
     return TextField(
+      key: const Key('ingredient_1'),
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
