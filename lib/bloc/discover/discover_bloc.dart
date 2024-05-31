@@ -28,6 +28,9 @@ class DiscoverBloc extends Bloc<DiscoverEvent, DiscoverState> {
     });
 
     on<QuerySummited>((event, emit) async {
+      print("Query Summited ");
+      print("query is ${state.query}");
+
       emit(DiscoverLoading(query: state.query, filtter: state.filtter));
       try {
         final recipes =

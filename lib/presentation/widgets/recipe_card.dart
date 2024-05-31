@@ -24,7 +24,7 @@ class RecipeCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            context.go('/detailed_recipe_view', extra: recipe);
+            context.go('/detailed_recipe_view', extra: recipe.id);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

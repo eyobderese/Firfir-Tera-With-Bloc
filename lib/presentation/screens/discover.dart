@@ -153,9 +153,11 @@ Widget SearchFormField(TextEditingController searchController) {
           borderRadius: BorderRadius.circular(50),
         ),
       ),
-      onChanged: (val) {},
-      onSubmitted: (val) {
+      onChanged: (val) {
         context.read<DiscoverBloc>().add(SearchQueryChanged(query: val));
+      },
+      onSubmitted: (val) {
+        context.read<DiscoverBloc>().add(QuerySummited());
       },
     );
   });

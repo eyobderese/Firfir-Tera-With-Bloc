@@ -13,6 +13,7 @@ import 'package:firfir_tera/bloc/createRecipe/create_recipe_bloc.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_event.dart';
 import 'package:firfir_tera/bloc/createRecipe/create_recipe_state.dart';
 import 'package:firfir_tera/model/recipe.dart';
+import 'package:firfir_tera/presentation/screens/detailed_recipe_view.dart';
 import 'package:firfir_tera/presentation/widgets/fasting_drop_down.dart';
 import 'package:firfir_tera/presentation/widgets/meal_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,21 @@ class EditRecipe extends StatefulWidget {
 }
 
 class _EditRecipeState extends State<EditRecipe> {
+  final TextEditingController recipeNameController = TextEditingController();
+  final TextEditingController serveController = TextEditingController();
+  final TextEditingController cookTimeController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     context
         .read<CreateRecipeBloc>()
         .add(LoadRecipeForEditing(recipe: widget.recipe));
+    recipeNameController.text = widget.recipe.name;
+    serveController.text = widget.recipe.people.toString();
+    cookTimeController.text = widget.recipe.cookTime.toString();
+    descriptionController.text = widget.recipe.description;
   }
 
   @override
@@ -54,11 +64,15 @@ class _EditRecipeState extends State<EditRecipe> {
               if (state.formSubmissionStatus is SubmissionSuccess)
                 {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                            'Recipe edited Successfully, You can view it in the Discover Page')),
+                    const SnackBar(content: Text('Recipe edited Successfully')),
                   ),
-                  context.read<HomeBloc>().add(HomeEventIndexSelected(0)),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DetailedView(recipeId: widget.recipe.id!),
+                    ),
+                  )
                 }
               else if (state.formSubmissionStatus is SubmissionFailed)
                 {
@@ -80,7 +94,13 @@ class _EditRecipeState extends State<EditRecipe> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          context.goNamed("/home");
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailedView(recipeId: widget.recipe.id!),
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.arrow_back),
                       ),
@@ -130,13 +150,13 @@ class _EditRecipeState extends State<EditRecipe> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  recipeNameField(context),
+                  recipeNameField(context, recipeNameController),
                   const SizedBox(height: 20),
-                  serveField(context),
+                  serveField(context, serveController),
                   const SizedBox(height: 20),
-                  cockTimeField(context),
+                  cockTimeField(context, cookTimeController),
                   const SizedBox(height: 20),
-                  description(context),
+                  description(context, descriptionController),
                   const SizedBox(height: 20),
                   MealTypeDropdown(),
                   const SizedBox(height: 20),
@@ -271,10 +291,8 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  TextField cockTimeField(BuildContext context) {
-    final controller =
-        TextEditingController(text: widget.recipe.cookTime.toString());
-
+  TextField cockTimeField(
+      BuildContext context, TextEditingController controller) {
     return TextField(
       controller: controller,
       onChanged: (value) => context
@@ -298,10 +316,7 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  TextField serveField(BuildContext context) {
-    final controller =
-        TextEditingController(text: widget.recipe.people.toString());
-
+  TextField serveField(BuildContext context, TextEditingController controller) {
     return TextField(
       controller: controller,
       onChanged: (value) => context
@@ -325,8 +340,8 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  TextField recipeNameField(BuildContext context) {
-    final controller = TextEditingController(text: widget.recipe.name);
+  TextField recipeNameField(
+      BuildContext context, TextEditingController controller) {
     return TextField(
       controller: controller,
       textAlign: TextAlign.end,
@@ -350,9 +365,8 @@ class _EditRecipeState extends State<EditRecipe> {
     );
   }
 
-  TextField description(BuildContext context) {
-    final controller = TextEditingController(text: widget.recipe.description);
-
+  TextField description(
+      BuildContext context, TextEditingController controller) {
     return TextField(
       controller: controller,
       onChanged: (value) => context

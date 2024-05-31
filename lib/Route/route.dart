@@ -61,9 +61,9 @@ final GoRouter route = GoRouter(
         name: "/detailed_recipe_view",
         builder: (context, state) {
           print(state.extra);
-          final recipe = state.extra as Recipe;
+          final recipeId = state.extra as String;
           return DetailedView(
-            recipe: recipe,
+            recipeId: recipeId,
           );
         }),
     GoRoute(

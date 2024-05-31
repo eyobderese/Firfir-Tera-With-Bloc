@@ -42,6 +42,7 @@ class Recipe {
   String? get getId => this.id;
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
+    print(json['ingredients']);
     return Recipe(
       name: json['name'],
       description: json['description'],

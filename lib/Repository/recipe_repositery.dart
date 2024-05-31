@@ -14,6 +14,12 @@ class RecipeRepository {
     return recipeList;
   }
 
+  Future<Recipe> fetchRecipe(String recipeId) async {
+    final Recipe recipe = await _recipeService.getRecipe(recipeId);
+
+    return recipe;
+  }
+
   Future<String> saveRecipe({
     required String name,
     required String serves,

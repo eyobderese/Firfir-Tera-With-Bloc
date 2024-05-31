@@ -17,6 +17,25 @@ class RecipeService {
     return recipeList;
   }
 
+  Future<Recipe> getRecipe(String recipeId) async {
+    final token = await AuthService().getToken();
+    final response = await http.get(
+      Uri.parse('${_baseUrl}/$recipeId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+    );
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return Recipe.fromJson(data);
+    } else {
+      throw Exception('Failed to fetch recipe');
+    }
+  }
+
   Future<String> uploadRecipe({
     required String name,
     required String serves,
@@ -82,7 +101,7 @@ class RecipeService {
   Future<List<Recipe>> searchRecipes(String query, String filter) async {
     final token = await AuthService().getToken();
     final response = await http.get(
-      Uri.parse('${_baseUrl}/query?keyword=$query&category=$filter'),
+      Uri.parse('${_baseUrl}/query?name=$query&category=$filter'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -125,16 +144,12 @@ class RecipeService {
     request.fields['cookTime'] = cookingTime;
     request.fields['description'] = description;
     request.fields['type'] = category;
-    request.fields['fasting'] = fasting; // Hardcoded for now
+    request.fields['fasting'] = "Fasting"; // Hardcoded for now
     request.fields['cook_id'] =
         cookId; //TODO change the hardcoded with userId from AuthService
     // Add ingredients as JSON string
     request.fields['ingredients'] = jsonEncode(ingredients);
     request.fields['steps'] = jsonEncode(steps);
-    print(name);
-    print(serves);
-    print(cookingTime);
-    print(description);
 
     if (image != null) {
       File imageFile = File(image.path);
@@ -155,9 +170,9 @@ class RecipeService {
 
     // Send the request
     var response = await request.send();
-    print(response.statusCode);
+    print("edited recipe response: ${response.statusCode}");
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return ('Recipe uploaded successfully');
     } else {
       throw Exception(

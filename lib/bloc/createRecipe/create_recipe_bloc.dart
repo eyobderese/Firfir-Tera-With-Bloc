@@ -173,6 +173,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
     });
 
     on<UpdateRecipe>((event, emit) async {
+      print("hit update recipe");
       emit(state.copyWith(formSubmissionStatus: FormSubmitting()));
 
       List<String> ingredients = [];
@@ -181,6 +182,7 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
       for (var i = 0; i < controllers.length; i += 1) {
         ingredients.add(controllers[i].text);
       }
+      print(state.fasting);
       List<String> steps = [];
       final stepControllers = state.stepControllers;
       for (var i = 0; i < stepControllers.length; i += 1) {
