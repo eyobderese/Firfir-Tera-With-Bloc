@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 
-class Register2State extends Equatable {
+class Register2State {
   final String firstName;
   bool get isValidfirstName => firstName.length > 3;
 
@@ -32,7 +31,4 @@ class Register2State extends Equatable {
       formStatus: formStatus ?? this.formStatus,
     );
   }
-
-  @override
-  List<Object?> get props => [firstName, lastName, bio, formStatus];
 }

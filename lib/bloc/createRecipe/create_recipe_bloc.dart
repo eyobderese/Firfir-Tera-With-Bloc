@@ -41,7 +41,6 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
       final stepControllers = recipe.steps
           .map((step) => TextEditingController(text: step))
           .toList();
-      print(recipe.fasting);
 
       emit(state.copyWith(
         recipeName: recipe.name,
@@ -89,7 +88,6 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
             image: pickedFile,
             formSubmissionStatus: const InitialFormStatus()));
       }
-      print(pickedFile?.path);
     });
 
     on<RecipeNameChanged>((event, emit) {
@@ -142,8 +140,6 @@ class CreateRecipeBloc extends Bloc<CreateRecipeEvent, CreateRecipeState> {
       for (var i = 0; i < stepControllers.length; i += 1) {
         steps.add(stepControllers[i].text);
       }
-
-      print(state.formSubmissionStatus);
 
       try {
         await recipeRepository.saveRecipe(
