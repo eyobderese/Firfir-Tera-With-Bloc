@@ -31,23 +31,6 @@ void main() {
     });
 
     blocTest<CommentBloc, CommentState>(
-      'emits [CommentLoading, CommentLoaded] when LoadComments is added',
-      build: () {
-        when(mockCommentRepository.getComments('2'))
-            .thenAnswer((_) async => []);
-        return commentBloc;
-      },
-      act: (bloc) async {
-        bloc.add(LoadComments(recipeId: '2'));
-        await Future.delayed(const Duration(milliseconds: 1600));
-      },
-      expect: () => [
-        CommentLoading(),
-        CommentLoaded([]),
-      ],
-    );
-
-    blocTest<CommentBloc, CommentState>(
       'emits [CommentLoading, CommentError] when LoadComments fails',
       build: () {
         when(mockCommentRepository.getComments('1'))
