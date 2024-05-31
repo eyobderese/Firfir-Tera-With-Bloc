@@ -1,9 +1,11 @@
 import 'package:firfir_tera/Repository/recipe_repositery.dart';
+import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
+import 'package:firfir_tera/bloc/auth/auth_state.dart';
 import 'package:firfir_tera/model/recipe.dart';
 import 'package:firfir_tera/presentation/screens/comment.dart';
 import 'package:firfir_tera/presentation/screens/edit_recipe_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class DetailedView extends StatefulWidget {
@@ -18,11 +20,13 @@ class DetailedView extends StatefulWidget {
 class _DetailedViewState extends State<DetailedView> {
   final RecipeRepository _recipeRepository = RecipeRepository();
   late Future<Recipe> futureRecipe;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
     futureRecipe = _recipeRepository.fetchRecipe(widget.recipeId!);
+    userId = context.read<AuthBloc>().state.userId;
   }
 
   @override
@@ -33,8 +37,19 @@ class _DetailedViewState extends State<DetailedView> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(); // Show loading spinner while waiting
           } else if (snapshot.hasError) {
-            return Text(
-                'Error: ${snapshot.error}'); // Show error message if something went wrong
+            return Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      context.goNamed("/home");
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  title: const Text('Recipe Details'),
+                ),
+                body: Center(
+                    child: Text(
+                        'Error: ${snapshot.error}'))); // Show error message if something went wrong
           } else {
             Recipe recipe = snapshot.data!;
             return Scaffold(
@@ -82,7 +97,7 @@ class _DetailedViewState extends State<DetailedView> {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) {
@@ -95,65 +110,73 @@ class _DetailedViewState extends State<DetailedView> {
                                           },
                                           icon: const Icon(Icons.comment),
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                                return EditRecipe(
-                                                    recipe: recipe);
-                                              }),
-                                            );
-                                          },
-                                          icon: const Icon(Icons.edit),
-                                        ),
-                                        IconButton(
-                                            onPressed: () async {
-                                              final confirm = await showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    AlertDialog(
-                                                  title: const Text('Confirm'),
-                                                  content: const Text(
-                                                      'Are you sure you want to delete this recipe?'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(true),
-                                                      child: Text('Yes'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(false),
-                                                      child: Text('No'),
-                                                    ),
-                                                  ],
-                                                ),
+                                        if (userId == recipe.cookId)
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                                  return EditRecipe(
+                                                      recipe: recipe);
+                                                }),
                                               );
-
-                                              if (confirm) {
-                                                // Send the delete request
-                                                // Replace this with your actual delete request code
-                                                try {
-                                                  await _recipeRepository
-                                                      .deleteRecipe(recipe.id!);
-                                                  context.goNamed("/home");
-                                                } catch (e) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        'Failed to delete recipe: $e'),
-                                                  ));
-                                                }
-                                              }
                                             },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ))
+                                            icon: const Icon(Icons.edit),
+                                          ),
+                                        if (userId == recipe.cookId)
+                                          IconButton(
+                                              onPressed: () async {
+                                                final confirm =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    title:
+                                                        const Text('Confirm'),
+                                                    content: const Text(
+                                                        'Are you sure you want to delete this recipe?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
+                                                        child: Text('Yes'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(false),
+                                                        child: Text('No'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+
+                                                if (confirm) {
+                                                  // Send the delete request
+                                                  // Replace this with your actual delete request code
+                                                  try {
+                                                    await _recipeRepository
+                                                        .deleteRecipe(
+                                                            recipe.id!);
+                                                    context.goNamed("/home");
+                                                  } catch (e) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          'Failed to delete recipe: $e'),
+                                                    ));
+                                                  }
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              ))
                                       ],
                                     ),
                                   ],

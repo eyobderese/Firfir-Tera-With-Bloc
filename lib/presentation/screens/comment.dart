@@ -1,3 +1,4 @@
+import 'package:firfir_tera/bloc/auth/auth_bloc.dart';
 import 'package:firfir_tera/bloc/comment/comment_bloc.dart';
 import 'package:firfir_tera/bloc/comment/comment_event.dart';
 import 'package:firfir_tera/bloc/comment/comment_state.dart';
@@ -11,6 +12,7 @@ class CommentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? userId = context.read<AuthBloc>().state.userId;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -23,7 +25,7 @@ class CommentScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (_) => CommentBloc()..add(LoadComments(recipeId: recipeId)),
-        child: CommentView(recipeId: recipeId),
+        child: CommentView(recipeId: recipeId, userId: userId!),
       ),
     );
   }
@@ -32,7 +34,8 @@ class CommentScreen extends StatelessWidget {
 class CommentView extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final String recipeId;
-  CommentView({required this.recipeId});
+  final String userId;
+  CommentView({required this.recipeId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -60,79 +63,83 @@ class CommentView extends StatelessWidget {
                         ),
                         trailing:
                             Row(mainAxisSize: MainAxisSize.min, children: [
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              final TextEditingController _controller =
-                                  TextEditingController();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Edit Comment'),
-                                    content: TextField(
-                                      controller: _controller,
-                                      decoration: InputDecoration(
-                                          hintText: "Enter new comment"),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('Cancel'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
+                          if (comment.user.id == userId)
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                final TextEditingController _controller =
+                                    TextEditingController();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Edit Comment'),
+                                      content: TextField(
+                                        controller: _controller,
+                                        decoration: InputDecoration(
+                                            hintText: "Enter new comment"),
                                       ),
-                                      TextButton(
-                                        child: Text('Save'),
-                                        onPressed: () {
-                                          context.read<CommentBloc>().add(
-                                              UpdateComment(comment.id,
-                                                  _controller.text, recipeId));
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ).then((value) {
-                                context
-                                    .read<CommentBloc>()
-                                    .add(LoadComments(recipeId: recipeId));
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text('Confirm Deletion'),
-                                    content: Text(
-                                        'Are you sure you want to delete this comment?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text('Cancel'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text('Delete'),
-                                        onPressed: () {
-                                          context.read<CommentBloc>().add(
-                                              DeleteComment(
-                                                  comment.id, recipeId));
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Save'),
+                                          onPressed: () {
+                                            context.read<CommentBloc>().add(
+                                                UpdateComment(
+                                                    comment.id,
+                                                    _controller.text,
+                                                    recipeId));
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ).then((value) {
+                                  context
+                                      .read<CommentBloc>()
+                                      .add(LoadComments(recipeId: recipeId));
+                                });
+                              },
+                            ),
+                          if (comment.user.id == userId)
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Confirm Deletion'),
+                                      content: Text(
+                                          'Are you sure you want to delete this comment?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Delete'),
+                                          onPressed: () {
+                                            context.read<CommentBloc>().add(
+                                                DeleteComment(
+                                                    comment.id, recipeId));
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                         ]));
                   },
                 );

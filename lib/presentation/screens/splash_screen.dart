@@ -13,6 +13,7 @@ class SplashScreen extends StatelessWidget {
           // If the user is authenticated, navigate to the home page
           WidgetsBinding.instance!.addPostFrameCallback((_) {
             print("am here");
+
             context.go('/home');
           });
         } else {

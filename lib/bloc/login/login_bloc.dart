@@ -4,6 +4,7 @@ import 'package:firfir_tera/bloc/auth/auth_even.dart';
 import 'package:firfir_tera/bloc/form_submistion_status.dart';
 import 'package:firfir_tera/bloc/login/login_event.dart';
 import 'package:firfir_tera/bloc/login/login_state.dart';
+import 'package:firfir_tera/services/authService.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -28,9 +29,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         final String? token =
             await authRepo.login(state.username, state.password);
+        final String? userId = await authRepo.getUserId();
+        final String? role = await authRepo.getRole();
+
         if (token != null) {
           emit(state.copyWith(formStatus: SubmissionSuccess()));
-          authBloc.add(LoggedIn(token));
+          authBloc.add(LoggedIn(token, userId!, role!));
         } else {
           emit(state.copyWith(
               formStatus: SubmissionFailed(Exception('Failed to login'))));

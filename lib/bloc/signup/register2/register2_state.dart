@@ -5,9 +5,9 @@ class Register2State {
   bool get isValidfirstName => firstName.length > 3;
 
   final String lastName;
-  bool get isValidlastName => lastName.length > 6;
+  bool get isValidlastName => lastName.length > 3;
   final String bio;
-  bool get isValiddBio => lastName.length > 6;
+  bool get isValiddBio => lastName.length > 3;
 
   final FormSubmissionStatus formStatus;
 

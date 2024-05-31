@@ -57,13 +57,14 @@ final GoRouter route = GoRouter(
         name: "/register_3",
         builder: (context, state) => const Register_3()),
     GoRoute(
-        path: "/detailed_recipe_view",
+        path: "/detailed_recipe_view/:recipeId",
         name: "/detailed_recipe_view",
         builder: (context, state) {
           print(state.extra);
-          final recipeId = state.extra as String;
+          final recipeId = state.pathParameters['recipeId'];
+          print(recipeId);
           return DetailedView(
-            recipeId: recipeId,
+            recipeId: recipeId!,
           );
         }),
     GoRoute(

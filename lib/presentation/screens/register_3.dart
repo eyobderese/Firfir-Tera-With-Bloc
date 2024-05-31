@@ -54,7 +54,7 @@ class _Register_3State extends State<_Register_3> {
           _showSnackBar(context, formStatus.exception.toString());
         } else if (formStatus is SubmissionSuccess) {
           _showSnackBar(context, 'Success');
-          context.goNamed("/home");
+          context.goNamed("/login");
         }
       },
       child: Scaffold(

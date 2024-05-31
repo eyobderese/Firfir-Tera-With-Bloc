@@ -66,6 +66,12 @@ class AuthService {
     return token;
   }
 
+  Future<String?> getRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final role = prefs.getString('role');
+    return role;
+  }
+
   Future<void> signUp(String firstName, String lastName, String email,
       String password, String role, String bio, XFile image) async {
     var uri = Uri.parse('$_baseUrl/signup');

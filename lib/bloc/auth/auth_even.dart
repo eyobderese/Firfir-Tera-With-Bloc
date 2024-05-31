@@ -12,11 +12,13 @@ class AppStarted extends AuthEvent {}
 
 class LoggedIn extends AuthEvent {
   final String token;
+  final String userId;
+  final String role;
 
-  const LoggedIn(this.token);
+  const LoggedIn(this.token, this.userId, this.role);
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [token, userId, role];
 }
 
 class LoggedOut extends AuthEvent {}

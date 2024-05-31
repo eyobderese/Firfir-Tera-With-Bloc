@@ -13,8 +13,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
+    final userId = prefs.getString('userId');
+    final role = prefs.getString('role');
     if (token != null) {
-      emit(AuthAuthenticated(token));
+      emit(AuthAuthenticated(token, userId!, role!));
     } else {
       emit(AuthUnauthenticated());
     }
@@ -23,7 +25,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLoggedIn(LoggedIn event, Emitter<AuthState> emit) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', event.token);
-    emit(AuthAuthenticated(event.token));
+
+    emit(AuthAuthenticated(event.token, event.userId, event.role));
   }
 
   Future<void> _onLoggedOut(LoggedOut event, Emitter<AuthState> emit) async {
