@@ -107,6 +107,7 @@ class _Home extends StatelessWidget {
                   label: 'Admin Panal',
                 ),
               const BottomNavigationBarItem(
+                key: const Key('profilePageButton'),
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),

@@ -65,6 +65,7 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
+                key: const Key('editProfileButton'),
                 onPressed: () {
                   context.goNamed("/edit_profile");
                 },
